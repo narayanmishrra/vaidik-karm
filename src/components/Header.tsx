@@ -63,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1 font-medium text-[#F5E9D8]">
               <MapPin className="w-3 h-3 text-[#D98E2B]" />
-              Trimbakeshwar Jyotirlinga, Nashik
+              Trimbakeshwar Kshetra, Nashik
             </span>
             <span className="hidden md:inline text-[#D98E2B]/40">•</span>
             <span className="hidden md:flex items-center gap-1 text-[#FBF3E7]/90">
@@ -96,9 +96,11 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={() => handleNavClick('home')}
           className="flex items-center gap-2.5 cursor-pointer group"
         >
-          <div className="w-9 h-9 rounded-full bg-[#B5121B] border-2 border-[#D98E2B] flex items-center justify-center text-[#D98E2B] font-serif font-bold text-lg shadow group-hover:scale-105 transition-transform">
-            ॐ
-          </div>
+          <img
+            src="/images/logo.jpg"
+            alt="Trimbakeshwar Guruji"
+            className="w-10 h-10 rounded-full border-2 border-[#D98E2B] object-cover shadow group-hover:scale-105 transition-transform"
+          />
           <div>
             <h1 className="text-lg sm:text-xl font-serif font-bold text-[#F5E9D8] leading-tight tracking-wide group-hover:text-[#D98E2B] transition-colors">
               {t.brandTitle}

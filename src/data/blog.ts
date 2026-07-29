@@ -57,7 +57,7 @@ export const BLOG_POSTS: BlogPost[] = [
       en: '5 min read',
       hi: '5 मिनट पढ़ें'
     },
-    image: 'public/images/kaal_sarp_puja.webp',
+    image: '/images/kaal_sarp_puja.webp',
     faqs: [
       {
         question: {
@@ -129,7 +129,7 @@ export const BLOG_POSTS: BlogPost[] = [
       en: '6 min read',
       hi: '6 मिनट पढ़ें'
     },
-    image: 'public/images/narayan_nagbali.jpg',
+    image: '/images/narayan_nagbali.jpg',
     faqs: [
       {
         question: {

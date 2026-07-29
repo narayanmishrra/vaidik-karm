@@ -25,7 +25,7 @@ export const SchemaModal: React.FC<SchemaModalProps> = ({ isOpen, onClose }) => 
         "email": "contact@vaidikkarm.com",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Near Kusavarta Kund, Mandir Marg",
+          "streetAddress": "Trimbakeshwar Kshetra",
           "addressLocality": "Trimbakeshwar, Nashik",
           "addressRegion": "Maharashtra",
           "postalCode": "422212",
@@ -49,7 +49,7 @@ export const SchemaModal: React.FC<SchemaModalProps> = ({ isOpen, onClose }) => 
         "provider": { "@id": "https://vaidikkarm.com/#organization" },
         "serviceType": "Vedic Ritual",
         "areaServed": "Trimbakeshwar, Nashik, India",
-        "description": "Sankalp-based Kaalsarp Dosh Shanti Puja at Kusavarta Kund with silver Nag-Nagin pairs and Vedic Havan."
+        "description": "Sankalp-based Kaalsarp Dosh Shanti Puja at Trimbakeshwar Kshetra with silver Nag-Nagin pairs and Vedic Havan."
       },
       {
         "@type": "Service",
@@ -67,7 +67,7 @@ export const SchemaModal: React.FC<SchemaModalProps> = ({ isOpen, onClose }) => 
             "name": "Why is Kaalsarp Shanti performed exclusively at Trimbakeshwar?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Trimbakeshwar Jyotirlinga embodies Lord Brahma, Lord Vishnu, and Lord Mahesh in a single divine emblem, making rituals performed at Kusavarta Kund 100x more potent."
+              "text": "Trimbakeshwar Jyotirlinga embodies Lord Brahma, Lord Vishnu, and Lord Mahesh in a single divine emblem, making rituals performed at Trimbakeshwar Kshetra 100x more potent."
             }
           }
         ]

@@ -32,7 +32,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Home Page Summary Sections
     homeWelcomeHeading: 'Welcome to Trimbakeshwar Guruji',
     homeWelcomeSub: 'Dedicated to Pandit. Vinay Shastri (Guruji) — Famous & Authorised Purohit Serving Trimbakeshwar for 3-4 Generations',
-    homeWelcomeDesc: 'Trimbakeshwar Jyotirlinga is one of the most sacred places in Bharat, where the three divine supreme powers—Lord Brahma, Lord Vishnu, and Lord Mahesh—reside together in a single emblem. At Trimbakeshwar Guruji, Pandit. Vinay Shastri (Guruji) and family perform authentic Shanti rituals at Kusavarta Kund adhering strictly to the Yajurveda Shastras.',
+    homeWelcomeDesc: 'Trimbakeshwar Jyotirlinga is one of the most sacred places in Bharat, where the three divine supreme powers—Lord Brahma, Lord Vishnu, and Lord Mahesh—reside together in a single emblem. At Trimbakeshwar Guruji, Pandit. Vinay Shastri (Guruji) and family perform authentic Shanti rituals at Trimbakeshwar Kshetra adhering strictly to the Yajurveda Shastras.',
     
     homeServicesHeading: 'Sacred Pujas & Vidhis We Provide',
     homeServicesSub: 'Explore primary Vedic rituals performed by Pandit. Vinay Shastri (Guruji) with pure Samagri and full Sankalp.',
@@ -111,13 +111,13 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     howToReach: 'How to Reach Trimbakeshwar',
     nashikDistance: '30 km from Nashik City, Maharashtra',
     distanceLabel: 'Distance:',
-    kusavartaCaption: 'Kusavarta Kund & Temple Complex',
-    kusavartaCaptionSub: 'The holy stone bath reservoir where pilgrims take ritual bath prior to Vidhi.',
+    kusavartaCaption: 'Trimbakeshwar Kshetra',
+    kusavartaCaptionSub: 'The sacred Kshetra where pilgrims perform Vedic rituals with complete purity and devotion.',
 
     // Gallery Section
     galleryAll: 'All',
     galleryFilterRituals: 'Rituals & Havans',
-    galleryFilterTemple: 'Temple & Sanctum',
+    galleryFilterTemple: 'Kshetra & Sanctum',
     galleryFilterSamagri: 'Sacred Samagri',
     galleryFilterDevotees: 'Devotees & Blessings',
 
@@ -141,7 +141,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     detailsBtn: 'Read Details',
     knowMore: 'Know More',
     getInTouch: 'Get in Touch',
-    addressLine: 'Near Kusavarta Kund, Mandir Marg, Trimbakeshwar, Nashik, Maharashtra 422212',
+    addressLine: 'Trimbakeshwar Kshetra, Nashik, Maharashtra 422212',
     phoneDisplay: '+91 98220 12345',
     consultationHours: 'Consultation Hours: 6:00 AM – 9:30 PM (IST Daily)',
     nriNoteTitle: 'NRI / Overseas Devotee Support',
@@ -149,7 +149,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     
     // Page Headers
     historyPageTitle: 'History & Divine Significance of Trimbakeshwar',
-    historyPageSub: 'Discover the ancient legend of Gautama Rishi, Ganga River Descent, and Kusavarta Kund.',
+    historyPageSub: 'Discover the ancient legend of Gautama Rishi, Ganga River Descent, and Trimbakeshwar Kshetra.',
     
     servicesPageTitle: 'Vedic Puja Services & Ritual Procedures',
     servicesPageSub: 'Comprehensive guide to Kaalsarp Dosh, Narayan Nagbali, Tripindi Shraddha & Mahamrityunjay Jaap.',
@@ -157,14 +157,14 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     aboutPageTitle: 'About Trimbakeshwar Guruji',
     aboutPageSub: 'Meet Pandit. Vinay Shastri (Guruji) and learn about our 3-4 generation authorised purohit family.',
 
-    galleryPageTitle: 'Sacred Rituals & Temple Gallery',
-    galleryPageSub: 'High-definition glimpses of Havan, Samagri, Kusavarta Kund, and Sanctum blessings.',
+    galleryPageTitle: 'Sacred Rituals & Kshetra Gallery',
+    galleryPageSub: 'High-definition glimpses of Havan, Samagri, Trimbakeshwar Kshetra, and Sanctum blessings.',
 
     blogPageTitle: 'Trimbakeshwar Guruji - Knowledge & Pilgrimage Guides',
     blogPageSub: 'Educational articles clarifying astrological Doshas, Vidhi preparation, and travel advice.',
 
     contactPageTitle: 'Contact Pandit. Vinay Shastri (Guruji)',
-    contactPageSub: 'Direct consultation with Guruji. No middle agents or booking fees.'
+    contactPageSub: 'Direct consultation with Guruji. No middle agents or booking fees.',
   },
   hi: {
     // Brand & Header
@@ -197,7 +197,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Home Page Summary Sections
     homeWelcomeHeading: 'त्र्यंबकेश्वर गुरुजी में आपका स्वागत है',
     homeWelcomeSub: 'पं. विनय शास्त्री (गुरुजी) — 3-4 पीढ़ियों से सेवारत प्रसिद्ध एवं अधिकृत पंडितजी',
-    homeWelcomeDesc: 'त्र्यंबकेश्वर ज्योतिर्लिंग भारतवर्ष का अत्यंत पवित्र धाम है, जहाँ ब्रह्मा, विष्णु और महेश तीनों देव एक ही प्रतीक में विराजमान हैं। त्र्यंबकेश्वर गुरुजी में पं. विनय शास्त्री (गुरुजी) एवं परिवार यजुर्वेद शास्त्रानुसार कुशावर्त कुंड पर पूर्ण संकल्पित पूजा संपन्न कराते हैं।',
+    homeWelcomeDesc: 'त्र्यंबकेश्वर ज्योतिर्लिंग भारतवर्ष का अत्यंत पवित्र धाम है, जहाँ ब्रह्मा, विष्णु और महेश तीनों देव एक ही प्रतीक में विराजमान हैं। त्र्यंबकेश्वर गुरुजी में पं. विनय शास्त्री (गुरुजी) एवं परिवार त्र्यंबकेश्वर क्षेत्र में यजुर्वेद शास्त्रानुसार पूर्ण संकल्पित पूजा संपन्न कराते हैं।',
 
     homeServicesHeading: 'हमारे मुख्य वैदिक अनुष्ठान एवं पूजाएं',
     homeServicesSub: 'पं. विनय शास्त्री (गुरुजी) द्वारा शुद्ध सामग्री और पूर्ण वैदिक विधान के साथ आयोजित पूजाएं।',
@@ -276,13 +276,13 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     howToReach: 'त्र्यंबकेश्वर कैसे पहुँचें',
     nashikDistance: 'नासिक शहर से 30 किमी, महाराष्ट्र',
     distanceLabel: 'दूरी:',
-    kusavartaCaption: 'कुशावर्त कुंड एवं मंदिर परिसर',
-    kusavartaCaptionSub: 'पवित्र पाषाण स्नान कुंड जहाँ तीर्थयात्री किसी भी विधि से पूर्व अनुष्ठानिक स्नान करते हैं।',
+    kusavartaCaption: 'त्र्यंबकेश्वर क्षेत्र',
+    kusavartaCaptionSub: 'पवित्र क्षेत्र जहाँ तीर्थयात्री पूर्ण श्रद्धा एवं शुद्धता के साथ वैदिक अनुष्ठान संपन्न करते हैं।',
 
     // Gallery Section
     galleryAll: 'सभी',
     galleryFilterRituals: 'अनुष्ठान एवं हवन',
-    galleryFilterTemple: 'मंदिर एवं गर्भगृह',
+    galleryFilterTemple: 'क्षेत्र एवं गर्भगृह',
     galleryFilterSamagri: 'पवित्र सामग्री',
     galleryFilterDevotees: 'भक्त एवं आशीर्वाद',
 
@@ -306,7 +306,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     detailsBtn: 'विवरण पढ़ें',
     knowMore: 'और जानें',
     getInTouch: 'संपर्क करें',
-    addressLine: 'कुशावर्त कुंड के पास, मंदिर मार्ग, त्र्यंबकेश्वर, नासिक, महाराष्ट्र 422212',
+    addressLine: 'त्र्यंबकेश्वर क्षेत्र, नासिक, महाराष्ट्र 422212',
     phoneDisplay: '+91 98220 12345',
     consultationHours: 'परामर्श समय: प्रातः 6:00 से रात्रि 9:30 बजे तक (प्रतिदिन)',
     nriNoteTitle: 'विदेश/NRI श्रद्धालुओं के लिए विशेष सहायता',
@@ -314,7 +314,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
 
     // Page Headers
     historyPageTitle: 'त्र्यंबकेश्वर की महिमा एवं पौराणिक इतिहास',
-    historyPageSub: 'महर्षि गौतम की तपस्या, गंगा अवतरण और कुशावर्त कुंड की पावन गाथा।',
+    historyPageSub: 'महर्षि गौतम की तपस्या, गंगा अवतरण और त्र्यंबकेश्वर क्षेत्र की पावन गाथा।',
 
     servicesPageTitle: 'वैदिक पूजा सेवाएं एवं विधि विधान',
     servicesPageSub: 'कालसर्प दोष, नारायण नागबली, त्रिपिंडी श्राद्ध एवं महामृत्युंजय जाप का विस्तृत विवरण।',
@@ -322,8 +322,8 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     aboutPageTitle: 'त्र्यंबकेश्वर गुरुजी के बारे में',
     aboutPageSub: 'पं. विनय शास्त्री (गुरुजी) एवं हमारी 3-4 पीढ़ियों की अधिकृत पुरोहित परंपरा।',
 
-    galleryPageTitle: 'पावन अनुष्ठान एवं मंदिर चित्र गैलरी',
-    galleryPageSub: 'हवन, सामग्री, कुशावर्त कुंड एवं दिव्य दर्शन की मनमोहक झलकियां।',
+    galleryPageTitle: 'पावन अनुष्ठान एवं क्षेत्र चित्र गैलरी',
+    galleryPageSub: 'हवन, सामग्री, त्र्यंबकेश्वर क्षेत्र एवं दिव्य दर्शन की मनमोहक झलकियां।',
 
     blogPageTitle: 'त्र्यंबकेश्वर गुरुजी - ज्ञान एवं यात्रा मार्गदर्शन',
     blogPageSub: 'ज्योतिषीय दोषों, पूजा की तैयारी और यात्रा सुझावों पर आधारित लेख।',

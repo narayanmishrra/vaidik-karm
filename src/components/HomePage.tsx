@@ -171,8 +171,8 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="lg:col-span-5 relative">
               <div className="rounded-2xl overflow-hidden border-2 border-[#D98E2B] shadow-xl">
                 <img
-                  src="public\images\kushavarth_kund.webp"
-                  alt="Trimbakeshwar Temple Sanctum"
+                  src="/images/kushavarth_kund.webp"
+                  alt="Trimbakeshwar Kshetra"
                   className="w-full h-72 sm:h-80 object-cover"
                   referrerPolicy="no-referrer"
                 />

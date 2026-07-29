@@ -65,8 +65,8 @@ export const HistorySection: React.FC<HistorySectionProps> = ({ lang = 'en' }) =
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-2xl overflow-hidden border-2 border-[#D98E2B] shadow-xl">
               <img
-                src="public\images\kushavarth_kund.webp"
-                alt="Trimbakeshwar Temple Heritage"
+                src="/images/kushavarth_kund.webp"
+                alt="Trimbakeshwar Kshetra"
                 className="w-full h-80 lg:h-[420px] object-cover"
                 referrerPolicy="no-referrer"
               />

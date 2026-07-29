@@ -122,8 +122,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <MapPin className="w-5 h-5 text-[#B5121B]" />
             </div>
             <div>
-              <h3 className="text-xs font-bold text-[#6B0F1A]">Kusavarta Kund</h3>
-              <p className="text-[11px] text-gray-600">Trimbakeshwar Mandir Marg</p>
+              <h3 className="text-xs font-bold text-[#6B0F1A]">Trimbakeshwar Kshetra</h3>
+              <p className="text-[11px] text-gray-600">Nashik, Maharashtra</p>
             </div>
           </div>
         </div>

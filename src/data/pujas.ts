@@ -82,7 +82,7 @@ export const PUJA_SERVICES: PujaService[] = [
         'वैदिक आहुतियों सहित पवित्र हवन, आरती एवं चांदी की नाग-नागिन का विसर्जन'
       ]
     },
-    image: 'public/images/kaal_sarp_puja.webp',
+    image: '/images/kaal_sarp_puja.webp',
     isPopular: true,
     faqs: [
       {
@@ -194,7 +194,7 @@ export const PUJA_SERVICES: PujaService[] = [
         'दिन 3: गणेश पूजन, अहिल्या संगम पर नाग पूजन, ब्राह्मण भोजन एवं दान'
       ]
     },
-    image: 'public/images/narayan_nagbali.jpg',
+    image: '/images/narayan_nagbali.jpg',
     isPopular: true,
     faqs: [
       {
@@ -294,7 +294,7 @@ export const PUJA_SERVICES: PujaService[] = [
         'आरती एवं ब्राह्मण दान'
       ]
     },
-    image: 'public/images/tripindi.jpg',
+    image: '/images/tripindi.jpg',
     isPopular: true,
     faqs: [
       {
@@ -382,7 +382,7 @@ export const PUJA_SERVICES: PujaService[] = [
         'भस्म तिलक एवं प्रसाद वितरण'
       ]
     },
-    image: 'public/images/maha_mrityunjay_jaap.webp',
+    image: '/images/maha_mrityunjay_jaap.webp',
     isPopular: false,
     faqs: [
       {
@@ -468,7 +468,7 @@ export const PUJA_SERVICES: PujaService[] = [
         'आरती एवं ग्रह दान'
       ]
     },
-    image: 'public/images/navgrah_shanti.webp',
+    image: '/images/navgrah_shanti.webp',
     isPopular: false,
     faqs: [
       {
@@ -552,7 +552,7 @@ export const PUJA_SERVICES: PujaService[] = [
         'प्रसाद वितरण'
       ]
     },
-    image: 'public/images/vastu_shanti.webp',
+    image: '/images/vastu_shanti.webp',
     isPopular: false,
     faqs: [
       {
@@ -634,7 +634,7 @@ export const PUJA_SERVICES: PujaService[] = [
         'NRI भक्तों के लिए डिजिटल वीडियो अपडेट एवं लाइव परामर्श विकल्प'
       ]
     },
-    image: 'public/images/online.jpeg',
+    image: '/images/online.jpeg',
     isPopular: false,
     faqs: [
       {

@@ -102,8 +102,8 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({
           : 'For auspicious Mahurat dates, please share your preferred travel window or birth details. Pt. Vinay Shastri (Guruji) will personally check the Shastra calendar for you.';
       } else if (lower.includes('kaalsarp') || lower.includes('कालसर्प')) {
         responseText = lang === 'hi'
-          ? 'कालसर्प दोष शांति पूजा त्रिंबकेश्वर के कुशावर्त कुंड पर 1 दिन (3-4 घंटे) में शुद्ध तांबे/चांदी के नाग-नागिन जोड़ों के साथ संपन्न होती है।'
-          : 'Kaalsarp Dosh Shanti Puja is completed in 1 day (3-4 hours) at Kusavarta Kund with silver Nag-Nagin pairs and pure Vedic mantras.';
+          ? 'कालसर्प दोष शांति पूजा त्रिंबकेश्वर क्षेत्र पर 1 दिन (3-4 घंटे) में शुद्ध तांबे/चांदी के नाग-नागिन जोड़ों के साथ संपन्न होती है।'
+          : 'Kaalsarp Dosh Shanti Puja is completed in 1 day (3-4 hours) at Trimbakeshwar Kshetra with silver Nag-Nagin pairs and pure Vedic mantras.';
       } else if (lower.includes('narayan') || lower.includes('नागबली')) {
         responseText = lang === 'hi'
           ? 'नारायण नागबली विधि 3 दिवसीय पवित्र अनुष्ठान है। इसके लिए सफेद धोती/सोला वस्त्र आवश्यक हैं। रहने एवं भोजन की संपूर्ण व्यवस्था गुरुजी द्वारा की जाती है।'

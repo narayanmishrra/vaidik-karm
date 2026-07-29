@@ -99,7 +99,7 @@ export const GoogleBusinessWidget: React.FC<GoogleBusinessWidgetProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
         <div className="p-3 rounded-xl bg-[#FBF3E7] border border-[#D98E2B]/30 space-y-1">
           <p className="font-bold text-[#6B0F1A]">📍 Location</p>
-          <p className="text-gray-700">Trimbakeshwar Village, Near Kusavarta Kund, Nashik 422212</p>
+          <p className="text-gray-700">Trimbakeshwar Kshetra, Nashik, Maharashtra 422212</p>
         </div>
         <div className="p-3 rounded-xl bg-[#FBF3E7] border border-[#D98E2B]/30 space-y-1">
           <p className="font-bold text-[#6B0F1A]">⭐ Rating & Reviews</p>
