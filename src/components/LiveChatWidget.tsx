@@ -53,18 +53,8 @@ export const LiveChatWidget: React.FC<LiveChatWidgetProps> = ({
     ]);
   }, [lang]);
 
-  // Load Tawk.to script smoothly in background
-  useEffect(() => {
-    const s1 = document.createElement("script");
-    const s0 = document.getElementsByTagName("script")[0];
-    s1.async = true;
-    s1.src = 'https://embed.tawk.to/66a000000000000000000000/1i3tawk01';
-    s1.charset = 'UTF-8';
-    s1.setAttribute('crossorigin', '*');
-    if (s0 && s0.parentNode) {
-      s0.parentNode.insertBefore(s1, s0);
-    }
-  }, []);
+  // Note: External live-chat widget removed (placeholder ID was invalid and causing failed requests).
+  // The custom chat widget below handles all live consultation needs.
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

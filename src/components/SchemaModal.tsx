@@ -16,13 +16,13 @@ export const SchemaModal: React.FC<SchemaModalProps> = ({ isOpen, onClose }) => 
     "@graph": [
       {
         "@type": "ReligiousOrganization",
-        "@id": "https://vaidikkarm.com/#organization",
+        "@id": "https://www.kaalsarpintrimbakeshwar.com/#organization",
         "name": "Vaidik Karm - Trimbakeshwar Puja Services",
-        "url": "https://vaidikkarm.com",
-        "logo": "https://vaidikkarm.com/logo.png",
+        "url": "https://www.kaalsarpintrimbakeshwar.com",
+        "logo": "https://www.kaalsarpintrimbakeshwar.com/images/logo.jpg",
         "description": "Authentic Vedic Pujas and Rituals at Trimbakeshwar Jyotirlinga conducted by traditional hereditary Purohits. Kaalsarp Shanti, Narayan Nagbali, Tripindi Shraddha.",
         "telephone": "+919109695176",
-        "email": "contact@vaidikkarm.com",
+        "email": "contact@kaalsarpintrimbakeshwar.com",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Trimbakeshwar Kshetra",
@@ -46,7 +46,7 @@ export const SchemaModal: React.FC<SchemaModalProps> = ({ isOpen, onClose }) => 
       {
         "@type": "Service",
         "name": "Kaalsarp Dosh Shanti Puja",
-        "provider": { "@id": "https://vaidikkarm.com/#organization" },
+        "provider": { "@id": "https://www.kaalsarpintrimbakeshwar.com/#organization" },
         "serviceType": "Vedic Ritual",
         "areaServed": "Trimbakeshwar, Nashik, India",
         "description": "Sankalp-based Kaalsarp Dosh Shanti Puja at Trimbakeshwar Kshetra with silver Nag-Nagin pairs and Vedic Havan."
@@ -54,7 +54,7 @@ export const SchemaModal: React.FC<SchemaModalProps> = ({ isOpen, onClose }) => 
       {
         "@type": "Service",
         "name": "Narayan Nagbali Puja",
-        "provider": { "@id": "https://vaidikkarm.com/#organization" },
+        "provider": { "@id": "https://www.kaalsarpintrimbakeshwar.com/#organization" },
         "serviceType": "3-Day Ancestral Ritual",
         "areaServed": "Trimbakeshwar, Nashik, India",
         "description": "3-day authentic Narayan Nagbali ritual for Pitru Dosh and Sarp Shaap liberation."
