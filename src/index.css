@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-maroon: #6B0F1A;
+    --color-sacred-red: #B5121B;
+    --color-gold: #D98E2B;
+    --color-saffron: #E2711D;
+    --color-cream: #FBF3E7;
+    --color-cream-alt: #F3E6D3;
+    --color-charcoal: #241A16;
+    --color-offwhite: #F5E9D8;
+  }
+
+  body {
+    font-family: 'Poppins', 'Mukta', sans-serif;
+    background-color: var(--color-cream);
+    color: var(--color-charcoal);
+  }
+
+  h1, h2, h3, h4, .font-serif-heading {
+    font-family: 'Cinzel', 'Playfair Display', 'Cormorant Garamond', serif;
+  }
+}
+
+.font-serif {
+  font-family: 'Playfair Display', 'Cormorant Garamond', serif;
+}
+
+.font-display {
+  font-family: 'Cinzel', serif;
+}
+
+.font-body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.text-maroon {
+  color: #6B0F1A;
+}
+
+.bg-maroon {
+  background-color: #6B0F1A;
+}
+
+.border-gold {
+  border-color: #D98E2B;
+}
+
+.text-gold {
+  color: #D98E2B;
+}
+
+.bg-ivory {
+  background-color: #FBF3E7;
+}
+
+.temple-gradient {
+  background: linear-gradient(to bottom, rgba(107, 15, 26, 0.9), rgba(107, 15, 26, 0.4));
+}
+
+/* Custom Temple Gold & Maroon Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FBF3E7;
+}
+::-webkit-scrollbar-thumb {
+  background: #6B0F1A;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B5121B;
+}
+
+/* Gold shimmer motif line */
+.gold-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #D98E2B 50%, transparent 100%);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #FBF3E7 0%, #D98E2B 50%, #F5E9D8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-border-card {
+  border: 1px solid rgba(217, 142, 43, 0.3);
+}
+
+.gold-border-card:hover {
+  border-color: rgba(217, 142, 43, 0.8);
+}
+

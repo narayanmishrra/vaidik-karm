@@ -1,0 +1,6 @@
+{
+  "name": "Vaidik Karm - Trimbakeshwar Puja Services",
+  "description": "Authentic Vedic Puja and Ritual Services at Trimbakeshwar Jyotirlinga including Kaalsarp Shanti, Narayan Nagbali, and Tripindi Shraddha.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
