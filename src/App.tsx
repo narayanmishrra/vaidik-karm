@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { HomePage } from './components/HomePage';
 import { ServicesSection } from './components/ServicesSection';
@@ -10,20 +10,28 @@ import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { SeoTags } from './components/SeoTags';
 import { FloatingButtons } from './components/FloatingButtons';
-import { LiveChatWidget } from './components/LiveChatWidget';
-import { WhatsAppBuilderModal } from './components/WhatsAppBuilderModal';
 import { SchemaModal } from './components/SchemaModal';
 import { SectionId, Language } from './types';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<SectionId>('home');
   const [lang, setLang] = useState<Language>('en');
-  const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
-  const [whatsAppInitialPuja, setWhatsAppInitialPuja] = useState<string>('');
-  const [whatsAppCustomText, setWhatsAppCustomText] = useState<string>('');
   const [isSchemaModalOpen, setIsSchemaModalOpen] = useState(false);
-  const [isLiveChatOpen, setIsLiveChatOpen] = useState(false);
   const [initialPujaId, setInitialPujaId] = useState<string>('');
+
+  useEffect(() => {
+    const openPujaFromUrl = () => {
+      const match = window.location.hash.match(/^#services\/([^/]+)\/procedure-faqs$/);
+      if (match?.[1]) {
+        setActiveSection('services');
+        setInitialPujaId(decodeURIComponent(match[1]));
+      }
+    };
+
+    openPujaFromUrl();
+    window.addEventListener('hashchange', openPujaFromUrl);
+    return () => window.removeEventListener('hashchange', openPujaFromUrl);
+  }, []);
 
   const toggleLanguage = () => {
     setLang((prev) => (prev === 'en' ? 'hi' : 'en'));
@@ -126,20 +134,10 @@ export default function App() {
       {/* SEO Tags Footer Section */}
       <SeoTags />
 
-      {/* Floating Action Buttons (Live Chat Tawk.to, WhatsApp, Phone Call) */}
+      {/* Floating Action Buttons (WhatsApp, Phone Call) */}
       <FloatingButtons
-        onToggleLiveChat={() => setIsLiveChatOpen((prev) => !prev)}
-        isLiveChatOpen={isLiveChatOpen}
         onOpenWhatsApp={handleOpenWhatsAppWithCustomText}
         lang={lang}
-      />
-
-      {/* Live Chat Hovering Widget (Connected to Tawk.to) */}
-      <LiveChatWidget
-        isOpen={isLiveChatOpen}
-        onClose={() => setIsLiveChatOpen(false)}
-        lang={lang}
-        onOpenWhatsApp={handleOpenWhatsAppWithCustomText}
       />
 
       {/* Schema.org Inspector Modal */}

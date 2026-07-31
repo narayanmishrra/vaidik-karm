@@ -104,20 +104,30 @@ export const ProcedureModal: React.FC<ProcedureModalProps> = ({
           </div>
 
           {/* Step by Step Procedure */}
-          <div>
-            <h3 className="font-serif font-bold text-base text-[#6B0F1A] border-b border-[#D98E2B]/30 pb-1 mb-2">
+          <div id={`${puja.id}-procedure`}>
+            <h3 className="font-serif font-bold text-base text-[#6B0F1A] border-b border-[#D98E2B]/30 pb-1 mb-3">
               {t.modalProcedure}
             </h3>
-            <ol className="space-y-2">
-              {LA(puja.procedureSteps).map((step, idx) => (
-                <li key={idx} className="flex items-start gap-3 p-2.5 rounded-lg bg-[#F3E6D3]/60 text-xs">
-                  <span className="w-5 h-5 rounded-full bg-[#6B0F1A] text-white font-bold text-[11px] flex items-center justify-center shrink-0">
-                    {idx + 1}
-                  </span>
-                  <span className="text-[#241A16] font-medium">{step}</span>
-                </li>
-              ))}
-            </ol>
+            <div className="grid grid-cols-1 md:grid-cols-[220px,1fr] gap-4 items-start">
+              <div className="rounded-xl overflow-hidden border border-[#D98E2B]/40 bg-stone-900 shadow-md">
+                <img
+                  src={puja.image}
+                  alt={`${L(puja.name)} procedure`}
+                  className="w-full h-44 md:h-full min-h-44 object-cover opacity-90"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <ol className="space-y-2">
+                {LA(puja.procedureSteps).map((step, idx) => (
+                  <li key={idx} className="flex items-start gap-3 p-2.5 rounded-lg bg-[#F3E6D3]/60 text-xs">
+                    <span className="w-5 h-5 rounded-full bg-[#6B0F1A] text-white font-bold text-[11px] flex items-center justify-center shrink-0">
+                      {idx + 1}
+                    </span>
+                    <span className="text-[#241A16] font-medium">{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
 
           {/* Included Samagri */}
@@ -137,18 +147,28 @@ export const ProcedureModal: React.FC<ProcedureModalProps> = ({
 
           {/* Frequently Asked Questions */}
           {puja.faqs.length > 0 && (
-            <div>
-              <h3 className="font-serif font-bold text-base text-[#6B0F1A] border-b border-[#D98E2B]/30 pb-1 mb-2 flex items-center gap-1.5">
+            <div id={`${puja.id}-faqs`}>
+              <h3 className="font-serif font-bold text-base text-[#6B0F1A] border-b border-[#D98E2B]/30 pb-1 mb-3 flex items-center gap-1.5">
                 <HelpCircle className="w-4 h-4 text-[#D98E2B]" />
                 {t.modalFaq}
               </h3>
-              <div className="space-y-3">
-                {puja.faqs.map((faq, idx) => (
-                  <div key={idx} className="p-3 rounded-lg bg-white border border-[#D98E2B]/30">
-                    <p className="font-bold text-xs text-[#6B0F1A]">Q: {L(faq.question)}</p>
-                    <p className="text-xs text-gray-700 mt-1">A: {L(faq.answer)}</p>
-                  </div>
-                ))}
+              <div className="grid grid-cols-1 md:grid-cols-[1fr,220px] gap-4 items-start">
+                <div className="space-y-3">
+                  {puja.faqs.map((faq, idx) => (
+                    <div key={idx} className="p-3 rounded-lg bg-white border border-[#D98E2B]/30">
+                      <p className="font-bold text-xs text-[#6B0F1A]">Q: {L(faq.question)}</p>
+                      <p className="text-xs text-gray-700 mt-1">A: {L(faq.answer)}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="rounded-xl overflow-hidden border border-[#D98E2B]/40 bg-stone-900 shadow-md md:sticky md:top-2">
+                  <img
+                    src={puja.image}
+                    alt={`${L(puja.name)} FAQ`}
+                    className="w-full h-44 md:h-56 object-cover opacity-90"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
               </div>
             </div>
           )}
