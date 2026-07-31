@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { HomePage } from './components/HomePage';
 import { ServicesSection } from './components/ServicesSection';
@@ -19,18 +19,42 @@ export default function App() {
   const [isSchemaModalOpen, setIsSchemaModalOpen] = useState(false);
   const [initialPujaId, setInitialPujaId] = useState<string>('');
 
+  // Sync state with URL hash on mount and hashchange
   useEffect(() => {
-    const openPujaFromUrl = () => {
-      const match = window.location.hash.match(/^#services\/([^/]+)\/procedure-faqs$/);
-      if (match?.[1]) {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '').trim();
+      if (!hash) {
+        setActiveSection('home');
+        setInitialPujaId('');
+        return;
+      }
+
+      if (hash.startsWith('services/') && hash.endsWith('/procedure-faqs')) {
+        const pujaId = hash.replace(/^services\//, '').replace(/\/procedure-faqs$/, '');
         setActiveSection('services');
-        setInitialPujaId(decodeURIComponent(match[1]));
+        setInitialPujaId(decodeURIComponent(pujaId));
+        return;
+      }
+
+      if (hash.startsWith('puja/')) {
+        const pujaId = hash.replace('puja/', '');
+        setActiveSection('services');
+        setInitialPujaId(pujaId);
+        return;
+      }
+
+      const validSections: SectionId[] = ['home', 'history', 'services', 'about', 'gallery', 'blog', 'contact'];
+      if (validSections.includes(hash as SectionId)) {
+        setActiveSection(hash as SectionId);
+        if (hash !== 'services') {
+          setInitialPujaId('');
+        }
       }
     };
 
-    openPujaFromUrl();
-    window.addEventListener('hashchange', openPujaFromUrl);
-    return () => window.removeEventListener('hashchange', openPujaFromUrl);
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   const toggleLanguage = () => {
@@ -53,12 +77,15 @@ export default function App() {
 
   const handleNavigateSection = (id: SectionId) => {
     setActiveSection(id);
+    setInitialPujaId('');
+    window.location.hash = id === 'home' ? '' : id;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSelectPuja = (pujaId: string) => {
     setInitialPujaId(pujaId);
     setActiveSection('services');
+    window.location.hash = `puja/${pujaId}`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

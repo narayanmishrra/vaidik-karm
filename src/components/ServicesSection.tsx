@@ -45,11 +45,30 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
       if (puja) {
         openPujaProcedure(puja);
       }
-      if (onClearInitialPujaId) {
-        onClearInitialPujaId();
+    } else {
+      const hash = window.location.hash.replace('#', '').trim();
+      if (hash.startsWith('puja/')) {
+        const pujaId = hash.replace('puja/', '');
+        const puja = PUJA_SERVICES.find((p) => p.id === pujaId);
+        if (puja) {
+          setSelectedPujaForModal(puja);
+        }
       }
     }
-  }, [initialPujaId, onClearInitialPujaId]);
+  }, [initialPujaId]);
+
+  const handleOpenPujaModal = (puja: PujaService) => {
+    setSelectedPujaForModal(puja);
+    window.location.hash = `puja/${puja.id}`;
+  };
+
+  const handleClosePujaModal = () => {
+    setSelectedPujaForModal(null);
+    if (onClearInitialPujaId) {
+      onClearInitialPujaId();
+    }
+    window.location.hash = 'services';
+  };
 
   useEffect(() => {
     const syncPujaFromUrl = () => {
@@ -131,8 +150,8 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${activeCategory === cat.id
-                      ? 'bg-[#6B0F1A] text-[#F5E9D8] shadow-md border border-[#D98E2B]'
-                      : 'text-[#241A16] hover:bg-[#6B0F1A]/10'
+                    ? 'bg-[#6B0F1A] text-[#F5E9D8] shadow-md border border-[#D98E2B]'
+                    : 'text-[#241A16] hover:bg-[#6B0F1A]/10'
                     }`}
                 >
                   {cat.label}

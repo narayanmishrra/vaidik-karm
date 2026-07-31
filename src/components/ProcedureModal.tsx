@@ -46,6 +46,28 @@ export const ProcedureModal: React.FC<ProcedureModalProps> = ({
 
         {/* Modal Body Scrollable */}
         <div className="p-6 overflow-y-auto space-y-6 flex-1 text-sm leading-relaxed">
+          {/* Linked Puja Hero Image Banner */}
+          {puja.image && (
+            <div className="relative h-48 sm:h-56 -mt-2 -mx-2 rounded-xl overflow-hidden shadow-md border border-[#D98E2B]/40 bg-stone-900">
+              <img
+                src={puja.image}
+                alt={L(puja.name)}
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-4">
+                <div>
+                  <span className="text-xs text-[#D98E2B] font-serif italic block">
+                    {puja.sanskritName}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-serif font-bold text-white leading-tight">
+                    {L(puja.name)}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Quick Overview Badges */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 rounded-xl bg-[#F3E6D3] border border-[#D98E2B]/30">
             <div className="flex items-start gap-2">
