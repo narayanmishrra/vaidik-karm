@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PUJA_SERVICES } from '../data/pujas';
 import { PujaService, Language } from '../types';
-import { Phone, MessageSquare, Clock, Calendar, ChevronRight, Search, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Phone, MessageSquare, Clock, Calendar, ChevronRight, Search, Sparkles } from 'lucide-react';
 import { ProcedureModal } from './ProcedureModal';
 import { TRANSLATIONS } from '../data/translations';
 
@@ -25,17 +25,50 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedPujaForModal, setSelectedPujaForModal] = useState<PujaService | null>(null);
 
+  const getPujaProcedureUrl = (pujaId: string) => `#services/${encodeURIComponent(pujaId)}/procedure-faqs`;
+
+  const openPujaProcedure = (puja: PujaService) => {
+    setSelectedPujaForModal(puja);
+    window.history.pushState(null, '', getPujaProcedureUrl(puja.id));
+  };
+
+  const closePujaProcedure = () => {
+    setSelectedPujaForModal(null);
+    if (window.location.hash.startsWith('#services/')) {
+      window.history.pushState(null, '', '#services');
+    }
+  };
+
   useEffect(() => {
     if (initialPujaId) {
       const puja = PUJA_SERVICES.find((p) => p.id === initialPujaId);
       if (puja) {
-        setSelectedPujaForModal(puja);
+        openPujaProcedure(puja);
       }
       if (onClearInitialPujaId) {
         onClearInitialPujaId();
       }
     }
   }, [initialPujaId, onClearInitialPujaId]);
+
+  useEffect(() => {
+    const syncPujaFromUrl = () => {
+      const match = window.location.hash.match(/^#services\/([^/]+)\/procedure-faqs$/);
+      if (match?.[1]) {
+        const puja = PUJA_SERVICES.find((p) => p.id === decodeURIComponent(match[1]));
+        setSelectedPujaForModal(puja || null);
+      } else if (window.location.hash === '#services' || !window.location.hash.startsWith('#services/')) {
+        setSelectedPujaForModal(null);
+      }
+    };
+
+    window.addEventListener('hashchange', syncPujaFromUrl);
+    window.addEventListener('popstate', syncPujaFromUrl);
+    return () => {
+      window.removeEventListener('hashchange', syncPujaFromUrl);
+      window.removeEventListener('popstate', syncPujaFromUrl);
+    };
+  }, []);
 
   const categories = [
     { id: 'all', label: t.filterAll },
@@ -126,7 +159,17 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
           {filteredPujas.map((puja) => (
             <div
               key={puja.id}
-              className="group bg-white rounded-2xl border border-[#D98E2B]/40 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1"
+              onClick={() => openPujaProcedure(puja)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  openPujaProcedure(puja);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label={`${L(puja.name)} procedure and FAQs`}
+              className="group bg-white rounded-2xl border border-[#D98E2B]/40 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1 cursor-pointer focus:outline-none focus:ring-4 focus:ring-[#D98E2B]/40"
             >
               {/* Card Image */}
               <div className="relative h-48 overflow-hidden bg-stone-900">
@@ -177,7 +220,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 {/* Card Actions */}
                 <div className="space-y-2 pt-3 border-t border-gray-100">
                   <button
-                    onClick={() => setSelectedPujaForModal(puja)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      openPujaProcedure(puja);
+                    }}
                     className="w-full text-center py-2 px-3 rounded-lg bg-[#F3E6D3] hover:bg-[#6B0F1A] text-[#6B0F1A] hover:text-[#F5E9D8] font-semibold text-xs transition-colors flex items-center justify-center gap-1"
                   >
                     <span>{t.viewProcedure}</span>
@@ -186,7 +232,10 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
 
                   <div className="grid grid-cols-2 gap-2 pt-1">
                     <button
-                      onClick={() => onOpenWhatsAppForPuja(L(puja.name))}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        onOpenWhatsAppForPuja(L(puja.name));
+                      }}
                       className="flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-[11px] shadow transition-transform active:scale-95"
                     >
                       <MessageSquare className="w-3.5 h-3.5 text-emerald-200" />
@@ -195,6 +244,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
 
                     <a
                       href="tel:+919109695176"
+                      onClick={(event) => event.stopPropagation()}
                       className="flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-[#B5121B] hover:bg-[#8F0E15] text-white font-bold text-[11px] border border-[#D98E2B] shadow transition-transform active:scale-95"
                     >
                       <Phone className="w-3.5 h-3.5 text-[#D98E2B]" />
@@ -232,7 +282,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
       {/* Procedure Modal */}
       <ProcedureModal
         puja={selectedPujaForModal}
-        onClose={() => setSelectedPujaForModal(null)}
+        onClose={closePujaProcedure}
         onOpenWhatsAppForPuja={onOpenWhatsAppForPuja}
         lang={lang}
       />
