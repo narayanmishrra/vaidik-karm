@@ -18,14 +18,27 @@ export default function App() {
   const [lang, setLang] = useState<Language>('en');
   const [isSchemaModalOpen, setIsSchemaModalOpen] = useState(false);
   const [initialPujaId, setInitialPujaId] = useState<string>('');
+  const [initialPostId, setInitialPostId] = useState<string>('');
 
-  // Sync state with URL hash on mount and hashchange
+  // Sync state with URL path + hash on mount, hashchange and popstate
+  // Expanded blog URLs (/blog/:slug) are real paths served via vercel.json rewrites.
   useEffect(() => {
-    const handleHashChange = () => {
+    const syncRouteFromUrl = () => {
+      // Real path route: /blog/<slug> (expanded URL for SEO)
+      const path = window.location.pathname;
+      const blogMatch = path.match(/^\/blog\/([^/]+)\/?$/);
+      if (blogMatch) {
+        setActiveSection('blog');
+        setInitialPostId(decodeURIComponent(blogMatch[1]));
+        setInitialPujaId('');
+        return;
+      }
+
       const hash = window.location.hash.replace('#', '').trim();
       if (!hash) {
         setActiveSection('home');
         setInitialPujaId('');
+        setInitialPostId('');
         return;
       }
 
@@ -33,6 +46,7 @@ export default function App() {
         const pujaId = hash.replace(/^services\//, '').replace(/\/procedure-faqs$/, '');
         setActiveSection('services');
         setInitialPujaId(decodeURIComponent(pujaId));
+        setInitialPostId('');
         return;
       }
 
@@ -40,6 +54,7 @@ export default function App() {
         const pujaId = hash.replace('puja/', '');
         setActiveSection('services');
         setInitialPujaId(pujaId);
+        setInitialPostId('');
         return;
       }
 
@@ -49,13 +64,26 @@ export default function App() {
         if (hash !== 'services') {
           setInitialPujaId('');
         }
+        setInitialPostId('');
       }
     };
 
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    syncRouteFromUrl();
+    window.addEventListener('hashchange', syncRouteFromUrl);
+    window.addEventListener('popstate', syncRouteFromUrl);
+    return () => {
+      window.removeEventListener('hashchange', syncRouteFromUrl);
+      window.removeEventListener('popstate', syncRouteFromUrl);
+    };
   }, []);
+
+  // When navigating to a hash-based section from an expanded blog URL,
+  // reset the pathname so the URL stays clean (e.g. /blog/x -> /#services).
+  const resetPathForHashNavigation = () => {
+    if (!/^\/(index\.html)?$/.test(window.location.pathname)) {
+      window.history.replaceState({}, '', '/');
+    }
+  };
 
   const toggleLanguage = () => {
     setLang((prev) => (prev === 'en' ? 'hi' : 'en'));
@@ -78,6 +106,8 @@ export default function App() {
   const handleNavigateSection = (id: SectionId) => {
     setActiveSection(id);
     setInitialPujaId('');
+    setInitialPostId('');
+    resetPathForHashNavigation();
     window.location.hash = id === 'home' ? '' : id;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -85,6 +115,8 @@ export default function App() {
   const handleSelectPuja = (pujaId: string) => {
     setInitialPujaId(pujaId);
     setActiveSection('services');
+    setInitialPostId('');
+    resetPathForHashNavigation();
     window.location.hash = `puja/${pujaId}`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -140,6 +172,7 @@ export default function App() {
           <BlogSection
             onOpenWhatsAppForArticle={handleOpenWhatsAppWithCustomText}
             lang={lang}
+            initialPostId={initialPostId}
           />
         )}
 

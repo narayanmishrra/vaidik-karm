@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Clock, Calendar, CheckCircle2, Flame, HelpCircle, Phone, MessageSquare } from 'lucide-react';
+import { X, Clock, Calendar, CheckCircle2, Flame, HelpCircle, Phone, MessageSquare, Sparkles } from 'lucide-react';
 import { PujaService, Language } from '../types';
 import { TRANSLATIONS } from '../data/translations';
 
@@ -95,6 +95,42 @@ export const ProcedureModal: React.FC<ProcedureModalProps> = ({
             </h3>
             <p className="text-gray-800">{L(puja.fullDesc)}</p>
           </div>
+
+          {/* 2026 Auspicious Muhurat Dates */}
+          {puja.dates2026 && (
+            <div id={`${puja.id}-2026-dates`} className="scroll-mt-24">
+              <h3 className="font-serif font-bold text-lg text-[#6B0F1A] border-b border-[#D98E2B]/30 pb-1 mb-2 flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-[#D98E2B]" />
+                {L(puja.dates2026.title)}
+              </h3>
+              <p className="text-xs text-gray-700 mb-3">{L(puja.dates2026.intro)}</p>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+                {puja.dates2026.months.map((m, idx) => (
+                  <div key={idx} className="p-2.5 rounded-lg bg-white border border-[#D98E2B]/30">
+                    <p className="font-bold text-[11px] text-[#6B0F1A] mb-1">{L(m.month)} 2026</p>
+                    <p className="text-[11px] text-gray-700 leading-snug">{m.dates}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs space-y-1.5">
+                <p className="font-bold text-amber-900 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                  {L(puja.dates2026.highlightsTitle)}
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-amber-950">
+                  {puja.dates2026.highlights[lang].map((h, i) => (
+                    <li key={i}>{h}</li>
+                  ))}
+                </ul>
+              </div>
+
+              {puja.dates2026.footnote && (
+                <p className="mt-2.5 text-[11px] italic text-gray-500">{L(puja.dates2026.footnote)}</p>
+              )}
+            </div>
+          )}
 
           {/* Who Should Perform */}
           <div>
