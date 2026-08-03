@@ -53,10 +53,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="flex gap-2 w-full sm:w-auto">
                 <a
                   href="tel:+919109695176"
+                  id="hero-call-btn"
+                  aria-label="Call Now"
                   className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-3 rounded-lg bg-[#B5121B] hover:bg-[#6B0F1A] text-white font-serif font-bold text-xs sm:text-base sm:px-6 sm:py-3.5 border border-[#D98E2B] shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
                 >
-                  <Phone className="w-4 h-4 text-[#D98E2B]" />
-                  <span>{t.quickCallBtn}</span>
+                  <Phone className="w-4 h-4 text-[#D98E2B] pointer-events-none" />
+                  <span className="pointer-events-none">{t.quickCallBtn}</span>
                 </a>
 
                 <button

@@ -145,10 +145,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenWhatsAppBuilde
               </button>
               <a
                 href="tel:+919109695176"
+                id="call-now-btn"
+                aria-label="Call Now"
                 className="w-full md:w-auto px-6 py-3 rounded-xl bg-[#B5121B] hover:bg-[#8F0E15] text-white font-bold text-xs border border-[#D98E2B] flex items-center justify-center gap-2"
               >
-                <Phone className="w-4 h-4 text-[#D98E2B]" />
-                <span>{t.callNow} +91 91096 95176</span>
+                <Phone className="w-4 h-4 text-[#D98E2B] pointer-events-none" />
+                <span className="pointer-events-none">{t.callNow} +91 91096 95176</span>
               </a>
             </div>
           </div>

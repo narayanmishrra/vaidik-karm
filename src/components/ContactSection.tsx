@@ -123,16 +123,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
               <div className="space-y-3 pt-2">
                 <a
                   href="tel:+919109695176"
+                  id="contact-call-btn"
+                  aria-label="Call Now"
                   className="flex items-center justify-between p-3.5 rounded-xl bg-[#B5121B] hover:bg-[#6B0F1A] text-white font-bold text-sm border border-[#D98E2B] shadow transition-transform hover:-translate-y-0.5"
                 >
-                  <div className="flex items-center gap-3">
-                    <Phone className="w-5 h-5 text-[#D98E2B]" />
-                    <div>
-                      <span className="block text-xs font-normal text-white/80">{formLabels.directPhone}</span>
-                      <span className="text-sm">+91 91096 95176</span>
+                  <div className="flex items-center gap-3 pointer-events-none">
+                    <Phone className="w-5 h-5 text-[#D98E2B] pointer-events-none" />
+                    <div className="pointer-events-none">
+                      <span className="block text-xs font-normal text-white/80 pointer-events-none">{formLabels.directPhone}</span>
+                      <span className="text-sm pointer-events-none">+91 91096 95176</span>
                     </div>
                   </div>
-                  <span className="text-xs text-[#D98E2B] font-bold">{formLabels.callNowArrow}</span>
+                  <span className="text-xs text-[#D98E2B] font-bold pointer-events-none">{formLabels.callNowArrow}</span>
                 </a>
 
                 <button
