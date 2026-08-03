@@ -207,6 +207,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                   </span>
                 )}
 
+                {/* 2026 Muhurat Dates Tag */}
+                {puja.dates2026 && (
+                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[#D98E2B] text-[#4A0B12] text-[10px] font-bold uppercase tracking-wider shadow border border-[#6B0F1A]/40 flex items-center gap-1">
+                    <Calendar className="w-3 h-3" />
+                    2026 Muhurat Dates
+                  </span>
+                )}
+
                 <div className="absolute bottom-3 left-4 right-4">
                   <span className="text-xs text-[#D98E2B] font-serif italic block">
                     {puja.sanskritName}
@@ -233,6 +241,14 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                       <Calendar className="w-3.5 h-3.5 text-[#B5121B] shrink-0" />
                       <span><strong className="text-gray-900">{t.mahuratLabel}</strong> {L(puja.bestDays)}</span>
                     </div>
+                    {puja.dates2026 && (
+                      <div className="flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-[#D98E2B] shrink-0" />
+                        <span className="text-[#6B0F1A] font-semibold">
+                          {lang === 'en' ? '📅 2026 Muhurat Dates Available — View Inside' : '📅 2026 मुहूर्त तिथियां उपलब्ध — विवरण देखें'}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
 

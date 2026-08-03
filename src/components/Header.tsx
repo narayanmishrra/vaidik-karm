@@ -102,9 +102,9 @@ export const Header: React.FC<HeaderProps> = ({
             className="w-10 h-10 rounded-full border-2 border-[#D98E2B] object-cover shadow group-hover:scale-105 transition-transform"
           />
           <div>
-            <h1 className="text-lg sm:text-xl font-serif font-bold text-[#F5E9D8] leading-tight tracking-wide group-hover:text-[#D98E2B] transition-colors">
+            <span className="block text-lg sm:text-xl font-serif font-bold text-[#F5E9D8] leading-tight tracking-wide group-hover:text-[#D98E2B] transition-colors">
               {t.brandTitle}
-            </h1>
+            </span>
             <p className="text-[10px] text-[#F5E9D8]/80 font-sans tracking-wider uppercase hidden sm:block">
               {t.brandSubtitle}
             </p>

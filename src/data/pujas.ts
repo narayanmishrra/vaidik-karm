@@ -83,6 +83,50 @@ export const PUJA_SERVICES: PujaService[] = [
       ]
     },
     image: '/images/kaal_sarp_puja.webp',
+    dates2026: {
+      title: {
+        en: '2026 Auspicious Kaal Sarp Puja Dates (Muhurat Calendar)',
+        hi: '2026 शुभ कालसर्प पूजा तिथियां (मुहूर्त कैलेंडर)'
+      },
+      intro: {
+        en: 'Here are the auspicious dates for Kaal Sarp Shanti and other birth-related Shanti rituals in 2026. These dates are aligned with Vedic Panchang (Tithi, Nakshatra and Rahu-Ketu yogas) for maximum dosha-nivaran benefits.',
+        hi: 'यहाँ 2026 में कालसर्प शांति एवं अन्य जन्म-संबंधी शांति अनुष्ठानों के शुभ मुहूर्त दिए गए हैं। ये तिथियां वैदिक पंचांग (तिथि, नक्षत्र एवं राहु-केतु योग) के अनुसार अधिकतम दोष-निवारण लाभ के लिए चुनी गई हैं।'
+      },
+      months: [
+        { month: { en: 'January', hi: 'जनवरी' }, dates: '4, 7, 10, 18, 19, 23, 28' },
+        { month: { en: 'February', hi: 'फरवरी' }, dates: '3, 6, 9, 12, 15, 19' },
+        { month: { en: 'March', hi: 'मार्च' }, dates: '3, 7, 10, 13, 17, 19, 23, 27, 30' },
+        { month: { en: 'April', hi: 'अप्रैल' }, dates: '2, 5, 8, 11, 14, 16, 19, 22, 26, 29' },
+        { month: { en: 'May', hi: 'मई' }, dates: '2, 5, 6, 11, 13, 17, 19, 21, 23, 24, 26, 28' },
+        { month: { en: 'June', hi: 'जून' }, dates: '1, 3, 4, 7, 9, 11, 13, 14, 17, 20, 24, 27, 30' },
+        { month: { en: 'July', hi: 'जुलाई' }, dates: '4, 6, 8, 11, 14, 17, 20, 23, 26, 29' },
+        { month: { en: 'August', hi: 'अगस्त' }, dates: '3, 7, 10, 13, 17 (Nag Panchami — Highly Auspicious), 20, 22, 25, 29, 30' },
+        { month: { en: 'September', hi: 'सितंबर' }, dates: '3, 6, 10, 13, 22, 24, 26' },
+        { month: { en: 'October', hi: 'अक्टूबर' }, dates: '23, 28, 31' },
+        { month: { en: 'November', hi: 'नवंबर' }, dates: '3, 7, 15, 19, 22, 24, 28' },
+        { month: { en: 'December', hi: 'दिसंबर' }, dates: '1, 5, 8, 12, 16, 18, 22, 25, 28, 31' }
+      ],
+      highlightsTitle: {
+        en: 'Critical Days for Kaal Sarp Puja',
+        hi: 'कालसर्प पूजा के लिए सर्वाधिक महत्वपूर्ण दिन'
+      },
+      highlights: {
+        en: [
+          'Nag Panchami (17 August 2026): Considered the most powerful day of the year for snake-related dosha pacification.',
+          'Amavasya: Lunar dark moon days are highly recommended for Rahu and Ketu rituals.',
+          'Mondays: The sacred day of Lord Shiva, the ultimate controller of Rahu-Ketu.'
+        ],
+        hi: [
+          'नाग पंचमी (17 अगस्त 2026): वर्ष का सबसे शक्तिशाली दिन — सर्प-संबंधी दोष शांति के लिए अत्यंत उत्तम।',
+          'अमावस्या: राहु और केतु अनुष्ठानों के लिए चंद्र अमावस्या के दिन अत्यंत शुभ माने जाते हैं।',
+          'सोमवार: भगवान शिव का दिन — राहु-केतु के अधिपति शिव की कृपा प्राप्त करने के लिए श्रेष्ठ।'
+        ]
+      },
+      footnote: {
+        en: 'Dates may shift slightly based on the actual Panchang for your birth details. For a personalised Muhurat, share your Janma Kundali with Acharya Ji on WhatsApp.',
+        hi: 'आपकी जन्म-विवरण के अनुसार वास्तविक पंचांग में तिथियां थोड़ी बदल सकती हैं। व्यक्तिगत मुहूर्त के लिए अपनी जन्म कुंडली व्हाट्सएप पर आचार्यजी से साझा करें।'
+      }
+    },
     isPopular: true,
     faqs: [
       {
@@ -195,6 +239,52 @@ export const PUJA_SERVICES: PujaService[] = [
       ]
     },
     image: '/images/narayan_nagbali.jpg',
+    dates2026: {
+      title: {
+        en: '2026 Auspicious Narayan Nagbali Dates (3-Day Muhurat Calendar)',
+        hi: '2026 शुभ नारायण नागबली तिथियां (3-दिवसीय मुहूर्त कैलेंडर)'
+      },
+      intro: {
+        en: 'Narayan Nagbali Puja is a sacred 3-day ceremony performed at Trimbakeshwar. Choosing the correct lunar days (tithis) and constellations (nakshatras) is vital for Ancestor Peace (Pitru Dosh Shanti). Here are the carefully calculated auspicious dates for the 3-day Pitru Dosh rituals (including Narayan Nagbali, Nagbali, and Tripindi Shraddha) in 2026.',
+        hi: 'नारायण नागबली पूजा त्र्यंबकेश्वर में संपन्न होने वाला पवित्र 3-दिवसीय अनुष्ठान है। पितृ शांति (पितृ दोष शांति) के लिए सही तिथियों और नक्षत्रों का चयन अत्यंत आवश्यक है। यहाँ 2026 में 3-दिवसीय पितृ दोष अनुष्ठानों (नारायण नागबली, नागबली एवं त्रिपिंडी श्राद्ध सहित) के लिए सावधानीपूर्वक गणना किए गए शुभ मुहूर्त प्रस्तुत हैं।'
+      },
+      months: [
+        { month: { en: 'January', hi: 'जनवरी' }, dates: '2, 5, 8, 11, 16, 20, 26, 29' },
+        { month: { en: 'February', hi: 'फरवरी' }, dates: '1, 4, 7, 10, 13, 16' },
+        { month: { en: 'March', hi: 'मार्च' }, dates: '1, 5, 8, 11, 15, 21, 25, 28, 31' },
+        { month: { en: 'April', hi: 'अप्रैल' }, dates: '3, 6, 9, 12, 16, 20, 24, 27, 30' },
+        { month: { en: 'May', hi: 'मई' }, dates: '3, 6, 9, 15 (No auspicious muhurats after 15 May due to Adhik Maas)' },
+        { month: { en: 'June', hi: 'जून' }, dates: '15, 18, 22, 25, 28 (No auspicious muhurats before 15 June due to Adhik Maas)' },
+        { month: { en: 'July', hi: 'जुलाई' }, dates: '2, 9, 12, 15, 18, 21, 24, 27, 30' },
+        { month: { en: 'August', hi: 'अगस्त' }, dates: '5, 8, 11, 14, 18, 21, 26' },
+        { month: { en: 'September', hi: 'सितंबर' }, dates: '1, 4, 8, 17, 20, 22, 28' },
+        { month: { en: 'October', hi: 'अक्टूबर' }, dates: '1, 5, 8, 26, 29' },
+        { month: { en: 'November', hi: 'नवंबर' }, dates: '1, 4, 13, 16, 22, 26, 29' },
+        { month: { en: 'December', hi: 'दिसंबर' }, dates: '3, 6, 10, 13, 20, 23, 26, 29' }
+      ],
+      highlightsTitle: {
+        en: 'Important Note on Adhik Maas (Extra Lunar Month)',
+        hi: 'अधिक मास (अतिरिक्त चंद्र मास) पर महत्वपूर्ण सूचना'
+      },
+      highlights: {
+        en: [
+          'Due to the occurrence of Adhik Maas in 2026, there are no auspicious muhurats for Narayan Nagbali Puja from May 16th to June 14th. Plan your visit accordingly.',
+          'Day 1: Formal Sankalp at Kushavarta Kund and beginning of Narayan Bali rituals with wheat flour pind daan.',
+          'Day 2: Specialized Nagbali rituals to seek forgiveness from Snake Deities.',
+          'Day 3: Concluding Tarpan, Brahmin Bhojan, and charities for peace.'
+        ],
+        hi: [
+          '2026 में अधिक मास के कारण 16 मई से 14 जून तक नारायण नागबली पूजा के लिए कोई शुभ मुहूर्त नहीं हैं। कृपया अपनी यात्रा की योजना तदनुसार बनाएं।',
+          'दिन 1: कुशावर्त कुंड पर विधिवत संकल्प एवं गेहूं के आटे के पिंडदान सहित नारायण बलि की शुरुआत।',
+          'दिन 2: नाग देवताओं से क्षमा प्रार्थना हेतु विशेष नागबली अनुष्ठान।',
+          'दिन 3: समापन तर्पण, ब्राह्मण भोजन एवं शांति हेतु दान-पुण्य।'
+        ]
+      },
+      footnote: {
+        en: 'Narayan Nagbali requires 3 consecutive days. Contact Acharya Ji at least 15 days in advance to confirm your Muhurat and complete documentation (Gotra, Nakshatra, birth details).',
+        hi: 'नारायण नागबली के लिए लगातार 3 दिन आवश्यक हैं। अपना मुहूर्त एवं आवश्यक विवरण (गोत्र, नक्षत्र, जन्म-विवरण) सुनिश्चित करने के लिए कम से कम 15 दिन पहले आचार्यजी से संपर्क करें।'
+      }
+    },
     isPopular: true,
     faqs: [
       {

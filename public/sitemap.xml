@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://www.kaalsarpintrimbakeshwar.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.kaalsarpintrimbakeshwar.com/#blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kaalsarpintrimbakeshwar.com/blog/kaalsarp-muhurat-2026</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.kaalsarpintrimbakeshwar.com/images/kaal_sarp_puja.webp</image:loc>
+      <image:title>Kaal Sarp Muhurat 2026 - Kaalsarp Shanti Puja Dates at Trimbakeshwar</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.kaalsarpintrimbakeshwar.com/blog/narayan-nagbali-muhurat-2026</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.kaalsarpintrimbakeshwar.com/images/narayan_nagbali.jpg</image:loc>
+      <image:title>Narayan Nagbali Muhurat 2026 - Auspicious 3-Day Pitru Dosh Ritual Dates</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.kaalsarpintrimbakeshwar.com/blog/understanding-kaalsarp-dosh-symptoms-remonies</loc>
+    <lastmod>2026-07-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.kaalsarpintrimbakeshwar.com/blog/difference-between-narayan-nagbali-and-tripindi-shraddha</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.kaalsarpintrimbakeshwar.com/blog/nri-guide-to-visiting-trimbakeshwar-for-pujas</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>

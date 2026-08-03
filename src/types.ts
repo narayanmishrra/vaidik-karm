@@ -11,6 +11,20 @@ export interface PujaFaq {
   answer: BiStr;
 }
 
+export interface PujaDatesMonth {
+  month: BiStr;
+  dates: string;
+}
+
+export interface PujaDates2026 {
+  title: BiStr;
+  intro: BiStr;
+  months: PujaDatesMonth[];
+  highlightsTitle: BiStr;
+  highlights: BiArr;
+  footnote?: BiStr;
+}
+
 export interface PujaService {
   id: string;
   name: BiStr;
@@ -26,6 +40,7 @@ export interface PujaService {
   image: string;
   faqs: PujaFaq[];
   isPopular?: boolean;
+  dates2026?: PujaDates2026;
 }
 
 export interface Testimonial {
