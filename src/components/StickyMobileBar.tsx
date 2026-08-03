@@ -16,10 +16,12 @@ export const StickyMobileBar: React.FC<StickyMobileBarProps> = ({
         {/* Direct Call Button */}
         <a
           href="tel:+919109695176"
+          id="sticky-call-btn"
+          aria-label="Call Now"
           className="flex items-center justify-center gap-2 py-3 px-3 rounded-lg bg-[#B5121B] text-white font-bold text-xs tracking-wide shadow-lg active:scale-95 transition-transform border border-[#D98E2B]/40"
         >
-          <Phone className="w-4 h-4 text-[#D98E2B] animate-pulse" />
-          <span>📞 CALL PANDITJI</span>
+          <Phone className="w-4 h-4 text-[#D98E2B] animate-pulse pointer-events-none" />
+          <span className="pointer-events-none">📞 CALL PANDITJI</span>
         </a>
 
         {/* WhatsApp Chat Button */}

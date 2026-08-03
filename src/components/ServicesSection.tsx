@@ -279,11 +279,13 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
 
                     <a
                       href="tel:+919109695176"
+                      id="service-call-btn"
+                      aria-label="Call Now"
                       onClick={(event) => event.stopPropagation()}
                       className="flex items-center justify-center gap-1 py-2 px-2 rounded-lg bg-[#B5121B] hover:bg-[#8F0E15] text-white font-bold text-[11px] border border-[#D98E2B] shadow transition-transform active:scale-95"
                     >
-                      <Phone className="w-3.5 h-3.5 text-[#D98E2B]" />
-                      <span>{t.callNow}</span>
+                      <Phone className="w-3.5 h-3.5 text-[#D98E2B] pointer-events-none" />
+                      <span className="pointer-events-none">{t.callNow}</span>
                     </a>
                   </div>
                 </div>

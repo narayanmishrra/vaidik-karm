@@ -33,10 +33,12 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
             <a
               href="tel:+919109695176"
+              id="footer-call-btn"
+              aria-label="Call Now"
               className="px-6 py-3.5 rounded-xl bg-[#6B0F1A] hover:bg-[#4A0B12] text-white font-bold text-sm border border-[#D98E2B] shadow-xl flex items-center gap-2"
             >
-              <Phone className="w-4 h-4 text-[#D98E2B]" />
-              <span>Call +91 91096 95176</span>
+              <Phone className="w-4 h-4 text-[#D98E2B] pointer-events-none" />
+              <span className="pointer-events-none">Call +91 91096 95176</span>
             </a>
 
             <button
@@ -175,8 +177,8 @@ export const Footer: React.FC<FooterProps> = ({
               <span>Trimbakeshwar Village</span>
             </p>
             <p className="flex items-center gap-1.5">
-              <Phone className="w-4 h-4 text-[#D98E2B] shrink-0" />
-              <a href="tel:+919109695176" className="hover:text-white font-bold">+91 91096 95176</a>
+              <Phone className="w-4 h-4 text-[#D98E2B] shrink-0 pointer-events-none" />
+              <a href="tel:+919109695176" id="footer-phone-link" aria-label="Call Now" className="hover:text-white font-bold">+91 91096 95176</a>
             </p>
             <p className="flex items-center gap-1.5 text-emerald-300">
               <Globe className="w-4 h-4 shrink-0" />

@@ -80,10 +80,12 @@ export const Header: React.FC<HeaderProps> = ({
 
             <a
               href="tel:+919109695176"
+              id="header-topbar-call-btn"
+              aria-label="Call Now"
               className="flex items-center gap-1 font-bold text-white hover:text-[#D98E2B] transition-colors"
             >
-              <Phone className="w-3 h-3 text-[#D98E2B]" />
-              <span className="hidden sm:inline">+91 91096 95176</span>
+              <Phone className="w-3 h-3 text-[#D98E2B] pointer-events-none" />
+              <span className="hidden sm:inline pointer-events-none">+91 91096 95176</span>
             </a>
           </div>
         </div>
@@ -152,10 +154,12 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
           <a
             href="tel:+919109695176"
+            id="header-call-btn"
+            aria-label="Call Now"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-[#B5121B] hover:bg-[#8F0E15] text-white border border-[#D98E2B] shadow transition-all hover:scale-105"
           >
-            <Phone className="w-3.5 h-3.5 text-[#D98E2B]" />
-            <span>{t.callNow}</span>
+            <Phone className="w-3.5 h-3.5 text-[#D98E2B] pointer-events-none" />
+            <span className="pointer-events-none">{t.callNow}</span>
           </a>
         </div>
 
@@ -208,10 +212,12 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <a
               href="tel:+919109695176"
+              id="header-mobile-call-btn"
+              aria-label="Call Now"
               className="flex items-center justify-center gap-1.5 py-2 rounded-lg bg-[#B5121B] text-white font-medium text-xs border border-[#D98E2B]"
             >
-              <Phone className="w-3.5 h-3.5 text-[#D98E2B]" />
-              Call Now
+              <Phone className="w-3.5 h-3.5 text-[#D98E2B] pointer-events-none" />
+              <span className="pointer-events-none">Call Now</span>
             </a>
           </div>
         </div>

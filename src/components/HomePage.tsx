@@ -141,11 +141,13 @@ export const HomePage: React.FC<HomePageProps> = ({
                   </button>
                   <a
                     href="tel:+919109695176"
+                    id="puja-call-btn"
+                    aria-label="Call Now"
                     onClick={(e) => { e.stopPropagation(); }}
                     className="py-2 px-2 rounded-lg bg-[#B5121B] hover:bg-[#8F0E15] text-white font-bold text-[11px] border border-[#D98E2B] shadow flex items-center justify-center gap-1"
                   >
-                    <Phone className="w-3.5 h-3.5 text-[#D98E2B]" />
-                    <span>{t.callNow}</span>
+                    <Phone className="w-3.5 h-3.5 text-[#D98E2B] pointer-events-none" />
+                    <span className="pointer-events-none">{t.callNow}</span>
                   </a>
                 </div>
               </div>
@@ -224,9 +226,11 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </button>
                 <a
                   href="tel:+919109695176"
+                  id="home-call-btn"
+                  aria-label="Call Now"
                   className="px-5 py-2.5 rounded-xl bg-[#B5121B] hover:bg-[#6B0F1A] text-white font-bold text-xs border border-[#D98E2B] shadow-md"
                 >
-                  Call +91 91096 95176
+                  <span className="pointer-events-none">Call +91 91096 95176</span>
                 </a>
               </div>
             </div>

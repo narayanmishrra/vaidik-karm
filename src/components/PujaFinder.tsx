@@ -255,10 +255,12 @@ export const PujaFinder: React.FC<PujaFinderProps> = ({
 
                 <a
                   href="tel:+919109695176"
+                  id="pujafinder-call-btn"
+                  aria-label="Call Now"
                   className="flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-[#B5121B] hover:bg-[#8F0E15] text-white font-bold text-xs border border-[#D98E2B] shadow-lg"
                 >
-                  <Phone className="w-4 h-4 text-[#D98E2B]" />
-                  <span>Call Purohit Now</span>
+                  <Phone className="w-4 h-4 text-[#D98E2B] pointer-events-none" />
+                  <span className="pointer-events-none">Call Purohit Now</span>
                 </a>
               </div>
 
