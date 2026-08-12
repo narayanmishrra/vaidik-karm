@@ -94,3 +94,26 @@
   border-color: rgba(217, 142, 43, 0.8);
 }
 
+/* Subtle entrance animation for above-the-fold hero content only.
+   Pure CSS — never blocks interaction and never delays the H1/CTA. */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.45s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up {
+    animation: none;
+  }
+}
+
