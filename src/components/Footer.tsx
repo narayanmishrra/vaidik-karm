@@ -129,6 +129,11 @@ export const Footer: React.FC<FooterProps> = ({
           </h5>
           <ul className="space-y-2 text-[#F5E9D8]/90">
             <li>
+              <a href="/kaal-sarp-puja" className="hover:text-[#D98E2B] text-left flex items-center gap-1">
+                <ChevronRight className="w-3 h-3 text-[#D98E2B]" /> Kaal Sarp Puja in Trimbakeshwar
+              </a>
+            </li>
+            <li>
               <button onClick={() => onSelectSection('services')} className="hover:text-[#D98E2B] text-left flex items-center gap-1">
                 <ChevronRight className="w-3 h-3 text-[#D98E2B]" /> Kaalsarp Dosh Shanti Puja
               </button>

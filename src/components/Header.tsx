@@ -99,7 +99,7 @@ export const Header: React.FC<HeaderProps> = ({
           className="flex items-center gap-2.5 cursor-pointer group"
         >
           <img
-            src="/images/logo.jpg"
+            src="/images/logo.webp"
             alt="Trimbakeshwar Guruji"
             className="w-10 h-10 rounded-full border-2 border-[#D98E2B] object-cover shadow group-hover:scale-105 transition-transform"
           />
