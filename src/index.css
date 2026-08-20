@@ -117,3 +117,23 @@
   }
 }
 
+/* Mobile hero: fill the first viewport (minus the sticky header) so the
+   image + headline + description + single CTA are all visible without
+   scrolling. Uses responsive viewport units (vh / svh / dvh) with a vh
+   fallback for older browsers. */
+@media (max-width: 1023.98px) {
+  .hero-mobile-min {
+    min-height: calc(100vh - 6rem); /* legacy fallback */
+  }
+  @supports (height: 100svh) {
+    .hero-mobile-min {
+      min-height: calc(100svh - 6rem);
+    }
+  }
+  @supports (height: 100dvh) {
+    .hero-mobile-min {
+      min-height: calc(100dvh - 6rem);
+    }
+  }
+}
+
