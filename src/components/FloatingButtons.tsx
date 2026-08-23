@@ -22,7 +22,7 @@ const WhatsAppIcon: React.FC<{ className?: string }> = ({ className }) => (
 /**
  * Persistent floating conversion buttons.
  *   LEFT  → WhatsApp (secondary)
- *   RIGHT → Call (primary, glowing + periodic ripple, number visible)
+ *   RIGHT → Call (primary, glowing + periodic ripple, ringing animation)
  * Respects safe-area insets and prefers-reduced-motion.
  */
 export const FloatingButtons: React.FC<FloatingButtonsProps> = ({ lang = 'en' }) => {
@@ -52,7 +52,7 @@ export const FloatingButtons: React.FC<FloatingButtonsProps> = ({ lang = 'en' })
         onClick={() => trackEvent('floating_call_click', { cta_location: 'floating_right' })}
         aria-label={`${lang === 'hi' ? 'अभी कॉल करें' : 'Call now'} ${BUSINESS_PHONE_DISPLAY}`}
         title={lang === 'hi' ? 'सीधा कॉल करें' : 'Call the pandit directly'}
-        className="floating-call-btn fixed z-50 flex items-center justify-center gap-2 rounded-full bg-green-600 px-4 py-3.5 text-white shadow-xl transition-colors hover:bg-green-700 active:scale-[0.98] sm:px-5"
+        className="floating-call-btn fixed z-50 flex h-[3.9rem] w-[3.9rem] items-center justify-center rounded-full bg-green-600 text-white shadow-xl shadow-black/25 transition-transform hover:scale-105 hover:bg-green-700 active:scale-95 sm:h-[4.2rem] sm:w-[4.2rem]"
         style={{
           right: 'max(0.85rem, env(safe-area-inset-right))',
           bottom: 'max(0.85rem, env(safe-area-inset-bottom))',
@@ -60,10 +60,8 @@ export const FloatingButtons: React.FC<FloatingButtonsProps> = ({ lang = 'en' })
       >
         {/* Expanding ripple ring (paused for reduced motion) */}
         <span className="floating-call-ripple" aria-hidden="true" />
-        <Phone className="relative h-5 w-5 shrink-0" aria-hidden="true" />
-        <span className="relative whitespace-nowrap text-sm font-bold tracking-wide">
-          {BUSINESS_PHONE_DISPLAY}
-        </span>
+        {/* Phone icon with ringing animation */}
+        <Phone className="floating-call-icon relative h-7 w-7 sm:h-8 sm:w-8" aria-hidden="true" />
       </a>
     </>
   );
