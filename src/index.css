@@ -137,3 +137,103 @@
   }
 }
 
+
+/* ================================================================== */
+/* Conversion-focused homepage redesign (2026-08)                     */
+/* ================================================================== */
+
+/* Devanagari display + body faces for bilingual headings/text */
+.font-hindi {
+  font-family: 'Noto Serif Devanagari', 'Mukta', sans-serif;
+}
+
+.font-hindi-body {
+  font-family: 'Mukta', 'Poppins', sans-serif;
+}
+
+/* Hero photo slideshow — gentle crossfade only (no aggressive sliding) */
+.hero-slide {
+  opacity: 0;
+  transition: opacity 0.9s ease-in-out;
+  will-change: opacity;
+}
+
+.hero-slide[data-active='true'] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide {
+    transition: none;
+  }
+}
+
+/* Floating call button — soft green glow + periodic expanding ripple.
+   The ring expands, fades, pauses, then repeats. Never flashes. */
+@keyframes call-ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  45% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+}
+
+@keyframes call-glow {
+  0%, 100% {
+    box-shadow: 0 6px 18px rgba(22, 163, 74, 0.45), 0 0 0 0 rgba(34, 197, 94, 0.35);
+  }
+  50% {
+    box-shadow: 0 6px 22px rgba(22, 163, 74, 0.65), 0 0 18px 2px rgba(34, 197, 94, 0.35);
+  }
+}
+
+.floating-call-btn {
+  animation: call-glow 3.2s ease-in-out infinite;
+}
+
+.floating-call-ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: rgba(34, 197, 94, 0.5);
+  animation: call-ripple 3.2s ease-out infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-call-btn {
+    animation: none;
+    box-shadow: 0 6px 18px rgba(22, 163, 74, 0.45);
+  }
+
+  .floating-call-ripple {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Native FAQ accordion styling */
+.faq-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-details[open] .faq-chevron {
+  transform: rotate(180deg);
+}
+
+.faq-chevron {
+  transition: transform 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-chevron {
+    transition: none;
+  }
+}

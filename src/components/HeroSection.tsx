@@ -1,176 +1,159 @@
-import React from 'react';
-import { Phone, MessageSquare, ShieldCheck, Award, Flame, Users, MapPin, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Phone, MapPin, Camera } from 'lucide-react';
 import { Language } from '../types';
-import { TRANSLATIONS } from '../data/translations';
+import {
+  trackEvent,
+  BUSINESS_PHONE_DISPLAY,
+  BUSINESS_PHONE_TEL,
+} from '../lib/analytics';
 
 interface HeroSectionProps {
-  onOpenWhatsAppBuilder: () => void;
-  onNavigateToServices: () => void;
   lang: Language;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({
-  onOpenWhatsAppBuilder,
-  onNavigateToServices,
-  lang
-}) => {
-  const t = TRANSLATIONS[lang];
+/* ------------------------------------------------------------------ */
+/* REAL photographs only — taken from the website's existing gallery.  */
+/* Order: Kaalsarp Puja → Narayan Nagbali → Trimbakeshwar Temple →     */
+/* puja vidhi, rotating every 3 seconds.                               */
+/* ------------------------------------------------------------------ */
+const HERO_SLIDES = [
+  {
+    src: '/images/2.webp',
+    alt: 'Real photograph: Kaalsarp Puja at Trimbakeshwar — Shivling decorated with silver Nag-Nagin and marigold garlands',
+    caption: { en: 'Kaalsarp Puja • Trimbakeshwar', hi: 'कालसर्प पूजा • त्र्यंबकेश्वर' },
+  },
+  {
+    src: '/images/narayan_nagbali.jpg',
+    alt: 'Real photograph: Narayan Nagbali Puja ritual being performed by pandits at Trimbakeshwar',
+    caption: { en: 'Narayan Nagbali Puja Vidhi', hi: 'नारायण नागबली पूजा विधि' },
+  },
+  {
+    src: '/images/Trimbakeshwar_Mandir.webp',
+    srcSet: '/images/Trimbakeshwar_Mandir-640.webp 640w, /images/Trimbakeshwar_Mandir.webp 960w',
+    sizes: '(max-width: 1023px) 100vw, 60vw',
+    alt: 'Real photograph: Trimbakeshwar Jyotirlinga Temple, Nashik',
+    caption: { en: 'Trimbakeshwar Jyotirlinga Mandir', hi: 'त्र्यंबकेश्वर ज्योतिर्लिंग मंदिर' },
+  },
+  {
+    src: '/images/4.webp',
+    alt: 'Real photograph: Puja kalash and ritual arrangements by the pandit at Trimbakeshwar',
+    caption: { en: 'Vedic Puja Arrangements', hi: 'वैदिक पूजा व्यवस्था' },
+  },
+];
+
+const SLIDE_INTERVAL_MS = 3000;
+
+/** Stacked, crossfading real photographs with caption + dots. */
+const HeroSlideshow: React.FC<{ className?: string }> = ({ className = '' }) => {
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = window.setInterval(
+      () => setActive((i) => (i + 1) % HERO_SLIDES.length),
+      SLIDE_INTERVAL_MS
+    );
+    return () => window.clearInterval(timer);
+  }, []);
 
   return (
-    <section className="relative bg-[#FBF3E7] text-[#241A16] border-b border-[#D98E2B]/40 overflow-hidden">
-      {/* ============================ HERO ============================ */}
-      <div className="relative">
-        {/* Mobile full-bleed background image (below lg). Desktop keeps its own card. */}
-        <div className="absolute inset-0 lg:hidden" aria-hidden="true">
-          <img
-            src="/images/Trimbakeshwar_Mandir.webp"
-            srcSet="/images/Trimbakeshwar_Mandir-640.webp 640w, /images/Trimbakeshwar_Mandir.webp 960w"
-            sizes="100vw"
-            alt=""
-            fetchPriority="high"
-            decoding="async"
-            className="w-full h-full object-cover object-[center_35%]"
-          />
-          {/* Cinematic dark gradient for readable text (image stays visible) */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#140a07] via-[#140a07]/55 to-[#140a07]/10" />
-          {/* Subtle brand tint under the sticky header for a seamless transition */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#6B0F1A]/45 via-transparent to-transparent" />
-        </div>
+    <div className={`overflow-hidden bg-stone-900 ${className}`}>
+      {HERO_SLIDES.map((slide, i) => (
+        <img
+          key={slide.src}
+          src={slide.src}
+          srcSet={'srcSet' in slide ? slide.srcSet : undefined}
+          sizes={'sizes' in slide ? slide.sizes : undefined}
+          alt={slide.alt}
+          data-active={i === active}
+          fetchPriority={i === 0 ? 'high' : undefined}
+          loading={i === 0 ? 'eager' : 'lazy'}
+          decoding="async"
+          className="hero-slide absolute inset-0 h-full w-full object-cover"
+        />
+      ))}
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:pt-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-7 items-center">
-            {/* Desktop image column (unchanged visual) */}
-            <div className="hidden lg:block lg:order-2 lg:col-span-5 relative">
-              <div className="relative rounded-2xl overflow-hidden border-2 border-[#D98E2B] shadow-2xl bg-stone-900 group">
-                <img
-                  src="/images/Trimbakeshwar_Mandir.webp"
-                  alt="Trimbakeshwar Sanctum"
-                  className="w-full lg:h-[504px] object-cover group-hover:scale-105 transition-transform duration-700"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#6B0F1A]/90 via-[#6B0F1A]/20 to-transparent" />
-              </div>
-            </div>
-
-            {/* Content column: mobile overlay on image, desktop left column */}
-            <div className="hero-mobile-min relative z-10 order-1 lg:order-1 lg:col-span-7 flex flex-col justify-end pb-24 pt-6 lg:block lg:p-0 lg:space-y-4">
-              {/* Mobile eyebrow — where it's offered */}
-              <p className="lg:hidden flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#EFC268]">
-                <MapPin className="w-3.5 h-3.5 text-[#D98E2B]" aria-hidden="true" />
-                {t.heroLocationBadge}
-              </p>
-
-              {/* Headline */}
-              <h1 className="mt-3 lg:mt-0 font-serif font-bold leading-[1.12] tracking-tight text-[clamp(1.75rem,8vw,2.6rem)] text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.6)] lg:text-6xl lg:text-[#6B0F1A] lg:leading-[1.15] lg:drop-shadow-none">
-                {t.heroTitleLine1}{' '}
-                <span className="block text-[#EFC268] lg:inline lg:text-[#B5121B] lg:italic lg:underline lg:decoration-[#D98E2B] lg:decoration-wavy lg:decoration-1">
-                  {t.heroTitleLine2}
-                </span>
-              </h1>
-
-              {/* Short description (mobile) */}
-              <p className="lg:hidden mt-3 max-w-md text-sm leading-relaxed text-white/90 drop-shadow-[0_1px_6px_rgba(0,0,0,0.7)]">
-                {t.heroDescriptionShort}
-              </p>
-
-              {/* Full description (desktop) */}
-              <p className="hidden lg:block text-sm sm:text-base text-[#4A3E39] leading-relaxed max-w-2xl font-sans">
-                {t.heroDescription}
-              </p>
-
-              {/* Mobile: single primary CTA */}
-              <a
-                href="tel:+919109695176"
-                id="hero-call-btn-mobile"
-                aria-label="Call Now"
-                className="lg:hidden mt-5 inline-flex items-center justify-center gap-2 w-full rounded-xl bg-[#B5121B] hover:bg-[#8F0E15] text-white font-bold text-base py-4 border border-[#D98E2B]/70 shadow-lg shadow-black/30 transition-all active:scale-[0.99]"
-              >
-                <Phone className="w-5 h-5 text-[#D98E2B]" aria-hidden="true" />
-                <span>{t.quickCallBtn}</span>
-              </a>
-
-              {/* Desktop: action buttons (unchanged visual) */}
-              <div className="hidden lg:flex pt-1 flex-col sm:flex-row gap-3">
-                <div className="flex gap-2 w-full sm:w-auto">
-                  <a
-                    href="tel:+919109695176"
-                    id="hero-call-btn"
-                    aria-label="Call Now"
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-3 rounded-lg bg-[#B5121B] hover:bg-[#6B0F1A] text-white font-serif font-bold text-xs sm:text-base sm:px-6 sm:py-3.5 border border-[#D98E2B] shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
-                  >
-                    <Phone className="w-4 h-4 text-[#D98E2B] pointer-events-none" />
-                    <span className="pointer-events-none">{t.quickCallBtn}</span>
-                  </a>
-
-                  <button
-                    onClick={onOpenWhatsAppBuilder}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-3 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white font-serif font-bold text-xs sm:text-base sm:px-6 sm:py-3.5 shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
-                  >
-                    <MessageSquare className="w-4 h-4 text-emerald-200" />
-                    <span>{t.whatsappBtn}</span>
-                  </button>
-                </div>
-
-                <button
-                  onClick={onNavigateToServices}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-lg bg-[#F3E6D3] hover:bg-[#6B0F1A] text-[#6B0F1A] hover:text-[#F5E9D8] font-bold text-xs sm:text-sm border border-[#D98E2B]/40 transition-colors"
-                >
-                  <span>{t.viewAllServices}</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Desktop: quick assurance (unchanged) */}
-              <p className="hidden lg:flex text-xs text-gray-600 items-center gap-1.5 pt-1">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>{t.heroStripAssurance}</span>
-              </p>
-            </div>
-          </div>
-        </div>
+      {/* Authenticity caption — small, subtle, bottom-left */}
+      <div className="absolute bottom-2 left-2 flex items-center gap-1.5 rounded-full bg-black/45 px-2.5 py-1 backdrop-blur-sm sm:bottom-3 sm:left-3">
+        <Camera className="h-3 w-3 text-white/80" aria-hidden="true" />
+        <span className="text-[10px] font-medium text-white/90 sm:text-[11px]">
+          {HERO_SLIDES[active].caption.en}
+        </span>
       </div>
 
-      {/* ===================== FEATURE STRIP (below hero) ===================== */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pb-8 lg:pb-16">
-        <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-2xl bg-white border border-[#D98E2B]/40 shadow-md">
-          <div className="p-3 flex items-center gap-3 border-r border-[#D98E2B]/20 last:border-0 md:last:border-r">
-            <div className="p-2.5 rounded-full bg-[#6B0F1A]/10 text-[#6B0F1A]">
-              <Award className="w-5 h-5 text-[#D98E2B]" />
-            </div>
-            <div>
-              <h3 className="text-xs font-bold text-[#6B0F1A]">{t.heroStripLineage}</h3>
-              <p className="text-[11px] text-gray-600">{t.heroStripLineageSub}</p>
-            </div>
-          </div>
+      {/* Slide dots */}
+      <div className="absolute bottom-2.5 right-2.5 flex gap-1.5 sm:bottom-4 sm:right-4" aria-hidden="true">
+        {HERO_SLIDES.map((_, i) => (
+          <span
+            key={i}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              i === active ? 'w-5 bg-white' : 'w-1.5 bg-white/50'
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
-          <div className="p-3 flex items-center gap-3 border-r border-[#D98E2B]/20 last:border-0 md:last:border-r">
-            <div className="p-2.5 rounded-full bg-[#6B0F1A]/10 text-[#6B0F1A]">
-              <Flame className="w-5 h-5 text-[#E2711D]" />
-            </div>
-            <div>
-              <h3 className="text-xs font-bold text-[#6B0F1A]">{t.heroStripVidhi}</h3>
-              <p className="text-[11px] text-gray-600">{t.heroStripVidhiSub}</p>
-            </div>
-          </div>
+export const HeroSection: React.FC<HeroSectionProps> = ({ lang }) => {
+  return (
+    <section className="relative border-b border-[#D98E2B]/40 bg-[#FBF3E7] text-[#241A16]">
+      {/* Desktop: full-bleed slideshow behind the content. */}
+      <div className="absolute inset-0 hidden lg:block">
+        <HeroSlideshow className="absolute inset-0 h-full w-full" />
+        {/* Subtle left-to-right gradient: text stays readable while the
+            photographs remain clearly recognisable on the right. */}
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-[#160b07]/90 via-[#160b07]/55 to-[#160b07]/10"
+          aria-hidden="true"
+        />
+      </div>
 
-          <div className="p-3 flex items-center gap-3 border-r border-[#D98E2B]/20 last:border-0 md:last:border-r">
-            <div className="p-2.5 rounded-full bg-[#6B0F1A]/10 text-[#6B0F1A]">
-              <Users className="w-5 h-5 text-[#6B0F1A]" />
-            </div>
-            <div>
-              <h3 className="text-xs font-bold text-[#6B0F1A]">{t.heroStripDevotees}</h3>
-              <p className="text-[11px] text-gray-600">{t.heroStripDevoteesSub}</p>
-            </div>
-          </div>
+      {/* Mobile: gallery image first in the flow (photo → H1 → H2 →
+          description → CALL NOW), no overlay so photos stay vivid. */}
+      <div className="relative lg:hidden">
+        <HeroSlideshow className="relative h-[36svh] max-h-[400px] min-h-[230px] w-full" />
+      </div>
 
-          <div className="p-3 flex items-center gap-3">
-            <div className="p-2.5 rounded-full bg-[#6B0F1A]/10 text-[#6B0F1A]">
-              <MapPin className="w-5 h-5 text-[#B5121B]" />
-            </div>
-            <div>
-              <h3 className="text-xs font-bold text-[#6B0F1A]">Trimbakeshwar Kshetra</h3>
-              <p className="text-[11px] text-gray-600">Nashik, Maharashtra</p>
-            </div>
+      {/* Single semantic content block for both breakpoints. */}
+      <div className="relative mx-auto max-w-7xl px-4 pb-6 pt-4 sm:px-6 lg:flex lg:min-h-[620px] lg:items-center lg:px-6 lg:py-16">
+        <div className="max-w-2xl space-y-2.5 lg:space-y-4">
+          <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6B0F1A] lg:text-xs lg:tracking-[0.22em] lg:text-[#EFC268]">
+            <MapPin className="h-3.5 w-3.5 text-[#B5121B] lg:text-[#D98E2B]" aria-hidden="true" />
+            Trimbakeshwar Jyotirlinga • Nashik{lang === 'hi' ? ' • महाराष्ट्र' : ', Maharashtra'}
+          </p>
+
+          <h1 className="font-hindi text-[clamp(1.45rem,6.4vw,2rem)] font-bold leading-snug text-[#6B0F1A] lg:text-5xl lg:leading-[1.25] lg:text-white lg:drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)] xl:text-[3.4rem]">
+            त्र्यंबकेश्वर में कालसर्प पूजा एवं नारायण नागबली पूजा
+          </h1>
+
+          <h2 className="font-serif text-base font-semibold leading-snug text-[#241A16] sm:text-lg lg:text-2xl lg:text-[#F5E9D8] lg:drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
+            Kaalsarp Puja &amp; Narayan Nagbali Puja at Trimbakeshwar
+          </h2>
+
+          <p className="font-hindi-body text-sm leading-relaxed text-gray-700 lg:text-white/90 sm:text-base">
+            {lang === 'hi'
+              ? 'त्र्यंबकेश्वर ज्योतिर्लिंग, नासिक में अनुभवी वैदिक पंडित द्वारा प्रामाणिक पूजा। तिथि, विधि एवं बुकिंग की जानकारी के लिए अभी कॉल करें।'
+              : 'Authentic Vedic pujas performed by an experienced pandit at Trimbakeshwar Jyotirlinga, Nashik. Call now for dates, vidhi guidance and booking.'}
+          </p>
+
+          <div className="pt-2">
+            <a
+              href={BUSINESS_PHONE_TEL}
+              id="hero-call-btn"
+              onClick={() => trackEvent('hero_call_click', { cta_location: 'hero' })}
+              className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-green-600 px-6 py-4 text-base font-bold text-white shadow-lg shadow-green-900/20 transition-all hover:bg-green-700 active:scale-[0.99] lg:w-auto lg:px-8 lg:text-lg lg:shadow-xl lg:shadow-black/30 lg:hover:-translate-y-0.5"
+            >
+              <Phone className="h-5 w-5 shrink-0" aria-hidden="true" />
+              <span>CALL NOW — {BUSINESS_PHONE_DISPLAY}</span>
+            </a>
+            <p className="mt-2 text-center text-[11px] text-gray-600 lg:text-left lg:text-white/75 lg:text-xs">
+              {lang === 'hi'
+                ? 'पंडित जी से सीधी बात • प्रातः 6 – रात्रि 9:30 IST • कोई बिचौलिया नहीं'
+                : 'Direct call to the pandit • 6 AM – 9:30 PM IST • No middlemen'}
+            </p>
           </div>
         </div>
       </div>

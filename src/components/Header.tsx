@@ -57,8 +57,9 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 bg-[#6B0F1A] text-[#F5E9D8] shadow-md border-b-2 border-[#D98E2B]">
-      {/* Sleek Compact Top Bar */}
-      <div className="bg-[#4A0B12] text-[#D98E2B] text-[11px] py-1 px-4 border-b border-[#D98E2B]/20">
+      {/* Sleek Compact Top Bar (hidden on mobile to keep the first
+          viewport focused on the hero + call CTA) */}
+      <div className="hidden md:block bg-[#4A0B12] text-[#D98E2B] text-[11px] py-1 px-4 border-b border-[#D98E2B]/20">
         <div className="max-w-7xl mx-auto flex justify-between items-center gap-2">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1 font-medium text-[#F5E9D8]">
