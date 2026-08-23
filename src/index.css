@@ -194,6 +194,40 @@
   }
 }
 
+/* Phone ringing animation — subtle shake/wiggle to mimic a ringing phone */
+@keyframes call-ring {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(14deg);
+  }
+  20% {
+    transform: rotate(-12deg);
+  }
+  30% {
+    transform: rotate(10deg);
+  }
+  40% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+  60% {
+    transform: rotate(-4deg);
+  }
+  70% {
+    transform: rotate(2deg);
+  }
+  80% {
+    transform: rotate(-1deg);
+  }
+  90% {
+    transform: rotate(0deg);
+  }
+}
+
 .floating-call-btn {
   animation: call-glow 3.2s ease-in-out infinite;
 }
@@ -207,6 +241,11 @@
   pointer-events: none;
 }
 
+.floating-call-icon {
+  animation: call-ring 1.8s ease-in-out infinite;
+  transform-origin: 50% 10%;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .floating-call-btn {
     animation: none;
@@ -216,6 +255,10 @@
   .floating-call-ripple {
     animation: none;
     opacity: 0;
+  }
+
+  .floating-call-icon {
+    animation: none;
   }
 }
 
