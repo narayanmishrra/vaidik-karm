@@ -1,11 +1,22 @@
 import React from 'react';
+import {
+  Phone,
+  MapPin,
+  Award,
+  BookOpenCheck,
+  Flame,
+  ChevronDown,
+  Mountain,
+  Droplets,
+} from 'lucide-react';
 import { HeroSection } from './HeroSection';
-import { GoogleBusinessWidget } from './GoogleBusinessWidget';
-import { PUJA_SERVICES } from '../data/pujas';
-import { TESTIMONIALS } from '../data/testimonials';
 import { SectionId, Language } from '../types';
-import { TRANSLATIONS } from '../data/translations';
-import { Star, ShieldCheck, Phone, MessageSquare, Flame, Globe, ChevronRight, Clock, Calendar } from 'lucide-react';
+import {
+  trackEvent,
+  whatsappUrl,
+  BUSINESS_PHONE_DISPLAY,
+  BUSINESS_PHONE_TEL,
+} from '../lib/analytics';
 
 interface HomePageProps {
   onSelectSection: (id: SectionId) => void;
@@ -15,310 +26,341 @@ interface HomePageProps {
   lang: Language;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({
-  onSelectSection,
-  onOpenWhatsAppForPuja,
-  onOpenWhatsAppWithCustomText,
-  onSelectPuja,
-  lang
-}) => {
-  const t = TRANSLATIONS[lang];
-  const L = (field: { en: string; hi: string }) => field[lang];
+/* ------------------------------------------------------------------ */
+/* Compact trust points — concise, no unverifiable claims.             */
+/* ------------------------------------------------------------------ */
+const TRUST_ITEMS = [
+  {
+    icon: MapPin,
+    en: 'Puja performed at Trimbakeshwar',
+    hi: 'पूजा त्र्यंबकेश्वर में संपन्न',
+  },
+  {
+    icon: Award,
+    en: 'Experienced Vedic pandit',
+    hi: 'अनुभवी वैदिक पंडित',
+  },
+  {
+    icon: BookOpenCheck,
+    en: 'Guidance on puja rituals & dates',
+    hi: 'पूजा विधि एवं तिथि का मार्गदर्शन',
+  },
+  {
+    icon: Flame,
+    en: 'Assistance with puja arrangements',
+    hi: 'पूजा व्यवस्था में सहायता',
+  },
+  {
+    icon: Phone,
+    en: 'Direct phone consultation',
+    hi: 'सीधी फोन बातचीत',
+  },
+];
 
-  // Show top 3 featured pujas on homepage
-  const featuredPujas = PUJA_SERVICES.slice(0, 3);
+const FAQ_ITEMS = [
+  {
+    qEn: 'How do I book Kaalsarp Puja at Trimbakeshwar?',
+    qHi: 'त्र्यंबकेश्वर में कालसर्प पूजा की बुकिंग कैसे करें?',
+    aEn: 'Call or WhatsApp the pandit ji directly. Share your name, birth details, gotra and preferred dates — an auspicious date is suggested as per the panchang and confirmed with you before booking.',
+    aHi: 'पंडित जी को सीधे कॉल या व्हाट्सएप करें। अपना नाम, जन्म विवरण, गोत्र और पसंदीदा तिथि बताएं — पंचांग के अनुसार शुभ तिथि सुझाई जाती है और बुकिंग से पहले आपसे पुष्टि की जाती है।',
+  },
+  {
+    qEn: 'How long does Kaalsarp Puja take?',
+    qHi: 'कालसर्प पूजा में कितना समय लगता है?',
+    aEn: 'The puja is completed in one day — the main vidhi takes approximately 3 to 4 hours. You receive the full schedule in advance.',
+    aHi: 'पूजा एक दिन में संपन्न होती है — मुख्य विधि में लगभग 3 से 4 घंटे लगते हैं। पूरा समय-क्रम पहले से बता दिया जाता है।',
+  },
+  {
+    qEn: 'How is Narayan Nagbali Puja performed?',
+    qHi: 'नारायण नागबली पूजा कैसे संपन्न होती है?',
+    aEn: 'Narayan Nagbali is a traditional ritual performed at Trimbakeshwar as per shastra vidhi, usually over three days. The pandit ji explains the process, dates, samagri and requirements clearly on call before you plan your visit.',
+    aHi: 'नारायण नागबली त्र्यंबकेश्वर में शास्त्र विधि से संपन्न होने वाली पारंपरिक पूजा है, सामान्यतः तीन दिनों में। आपकी यात्रा की योजना से पहले पंडित जी फोन पर प्रक्रिया, तिथि और सामग्री की स्पष्ट जानकारी देते हैं।',
+  },
+  {
+    qEn: 'Which days are preferred for these pujas?',
+    qHi: 'कौन-सी तिथियाँ शुभ मानी जाती हैं?',
+    aEn: 'Amavasya, Nag Panchami, Tuesday and Sunday are traditionally preferred. The final date is suggested based on the panchang and your birth details.',
+    aHi: 'अमावस्या, नाग पंचमी, मंगलवार और रविवार परंपरागत रूप से शुभ माने जाते हैं। अंतिम तिथि पंचांग और आपके जन्म विवरण के आधार पर सुझाई जाती है।',
+  },
+  {
+    qEn: 'Can NRI devotees book without travelling?',
+    qHi: 'क्या NRI भक्त बिना यात्रा किए बुकिंग कर सकते हैं?',
+    aEn: 'In-person presence is most ideal. For devotees who cannot travel, a Sankalp-based puja performed by the purohit on your behalf can be arranged with complete transparency.',
+    aHi: 'स्वयं उपस्थित रहना सबसे उत्तम है। जो भक्त यात्रा नहीं कर सकते, उनके लिए पंडित जी द्वारा आपकी ओर से संकल्प-आधारित पूजा पूर्ण पारदर्शिता के साथ आयोजित की जा सकती है।',
+  },
+  {
+    qEn: 'What is the cost of the puja?',
+    qHi: 'पूजा का शुल्क क्या है?',
+    aEn: 'The cost depends on the puja date, samagri requirements and the number of devotees. Call for the current details — complete information is shared before you confirm.',
+    aHi: 'शुल्क पूजा तिथि, सामग्री और भक्तों की संख्या पर निर्भर करता है। वर्तमान जानकारी के लिए कॉल करें — पुष्टि से पहले पूरी जानकारी साझा की जाती है।',
+  },
+];
+
+/** Shared green call CTA used across the page (one design language). */
+const CallCta: React.FC<{
+  id?: string;
+  event: string;
+  labelEn: string;
+  large?: boolean;
+}> = ({ id, event, labelEn, large = false }) => (
+  <a
+    href={BUSINESS_PHONE_TEL}
+    id={id}
+    onClick={() => trackEvent(event, { cta_location: event })}
+    className={`inline-flex items-center justify-center gap-2.5 rounded-xl bg-green-600 font-bold text-white shadow-lg shadow-green-900/20 transition-colors hover:bg-green-700 ${
+      large ? 'px-8 py-4 text-lg' : 'w-full px-5 py-3.5 text-sm sm:w-auto sm:text-base'
+    }`}
+  >
+    <Phone className="h-5 w-5 shrink-0" aria-hidden="true" />
+    <span>
+      {labelEn} — {BUSINESS_PHONE_DISPLAY}
+    </span>
+  </a>
+);
+
+export const HomePage: React.FC<HomePageProps> = ({ lang }) => {
+  const hi = lang === 'hi';
 
   return (
-    <div className="space-y-0">
-      {/* Hero Section */}
-      <HeroSection
-        onOpenWhatsAppBuilder={() =>
-          onOpenWhatsAppWithCustomText('Hari Om Acharya Ji. I am seeking guidance on Puja at Trimbakeshwar.')
-        }
-        onNavigateToServices={() => onSelectSection('services')}
-        lang={lang}
-      />
+    <div>
+      {/* ============ HERO: real gallery + bilingual headline + call ============ */}
+      <HeroSection lang={lang} />
 
-      {/* Greeting & About Us Summary Section */}
-      <section className="py-6 sm:py-8 bg-white text-[#241A16] border-b border-[#D98E2B]/30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-            {/* Pandits Image Card */}
-            <div className="md:col-span-5 relative">
-              <div className="rounded-2xl overflow-hidden border-2 border-[#D98E2B] shadow-lg bg-white">
-                <img
-                  src="/images/vinay_shastri.jpg"
-                  alt="Pandit Vinay Shastri"
-                  className="w-full max-w-[450px] h-auto object-contain mx-auto"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="p-2.5 bg-[#F3E6D3] border-t border-[#D98E2B]/30 text-center">
-                  <p className="font-serif font-bold text-xs text-[#6B0F1A]">
-                    {t.panditCardName}
-                  </p>
-                </div>
-              </div>
-            </div>
-            {/* Short Description */}
-            <div className="md:col-span-7 space-y-2">
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed font-body">
-                {t.homeWelcomeDesc}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Google Business Profile Widget Strip */}
-      <section className="py-6 bg-[#F3E6D3] border-b border-[#D98E2B]/30 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto">
-          <GoogleBusinessWidget variant="compact" />
-        </div>
-      </section>
-
-      {/* Pujas We Provide Summary Section */}
-      <section className="py-10 sm:py-14 bg-[#FBF3E7] text-[#241A16] border-b border-[#D98E2B]/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#6B0F1A]">
-              {t.homeServicesHeading}
-            </h2>
-            <div className="gold-divider w-24 mx-auto" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredPujas.map((puja) => (
+      {/* ===================== TRUST / QUICK BENEFITS ===================== */}
+      <section className="border-b border-[#D98E2B]/30 bg-white py-6 sm:py-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            {TRUST_ITEMS.map((item) => (
               <div
-                key={puja.id}
-                onClick={() => onSelectPuja(puja.id)}
-                className="bg-[#FBF3E7] rounded-2xl border border-[#D98E2B]/40 p-5 shadow-md flex flex-col justify-between space-y-4 hover:border-[#D98E2B] transition-all cursor-pointer hover:shadow-xl"
+                key={item.en}
+                className="flex items-start gap-2.5 rounded-xl border border-[#D98E2B]/25 bg-[#FBF3E7] p-3"
               >
-                <div className="space-y-3">
-                  <div className="relative h-44 rounded-xl overflow-hidden border border-[#D98E2B]/30">
-                    <img
-                      src={puja.image}
-                      alt={L(puja.name)}
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                    <div className="absolute bottom-2 left-3 right-3 text-white">
-                      <span className="text-[10px] text-[#D98E2B] font-serif italic block">
-                        {puja.sanskritName}
-                      </span>
-                      <h3 className="font-serif font-bold text-base text-white">
-                        {L(puja.name)}
-                      </h3>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-gray-700 leading-relaxed line-clamp-3">
-                    {L(puja.shortDesc)}
+                <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-green-700" aria-hidden="true" />
+                <div>
+                  <p className="font-hindi text-[13px] font-semibold leading-snug text-[#6B0F1A]">
+                    {item.hi}
                   </p>
-
-                  <div className="space-y-1 text-xs text-gray-600 pt-2 border-t border-[#D98E2B]/20">
-                    <div className="flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-[#B5121B]" />
-                      <span>{t.durationLabel} {L(puja.duration)}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-[#B5121B]" />
-                      <span>{t.bestDaysLabel} {L(puja.bestDays)}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 pt-2">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onOpenWhatsAppForPuja(L(puja.name));
-                    }}
-                    className="py-2 px-2 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-[11px] shadow flex items-center justify-center gap-1"
-                  >
-                    <MessageSquare className="w-3.5 h-3.5" />
-                    <span>{t.whatsappChat}</span>
-                  </button>
-                  <a
-                    href="tel:+919109695176"
-                    id="puja-call-btn"
-                    aria-label="Call Now"
-                    onClick={(e) => { e.stopPropagation(); }}
-                    className="py-2 px-2 rounded-lg bg-[#B5121B] hover:bg-[#8F0E15] text-white font-bold text-[11px] border border-[#D98E2B] shadow flex items-center justify-center gap-1"
-                  >
-                    <Phone className="w-3.5 h-3.5 text-[#D98E2B] pointer-events-none" />
-                    <span className="pointer-events-none">{t.callNow}</span>
-                  </a>
+                  <p className="text-[11px] leading-snug text-gray-600">{item.en}</p>
                 </div>
               </div>
             ))}
           </div>
-
-          <div className="text-center pt-2">
-            <button
-              onClick={() => onSelectSection('services')}
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#6B0F1A] hover:bg-[#8F0E15] text-[#F5E9D8] font-bold text-sm border border-[#D98E2B] shadow-lg transition-all"
-            >
-              <span>{t.viewAllServices}</span>
-              <ChevronRight className="w-4 h-4 text-[#D98E2B]" />
-            </button>
-          </div>
         </div>
       </section>
 
-      {/* Why Devotees Choose Us */}
-      <section className="py-12 sm:py-16 bg-[#F3E6D3] text-[#241A16] border-b border-[#D98E2B]/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-5 relative">
-              <div className="rounded-2xl overflow-hidden border-2 border-[#D98E2B] shadow-xl">
-                <img
-                  src="/images/kushavarth_kund.webp"
-                  alt="Trimbakeshwar Kshetra"
-                  className="w-full h-72 sm:h-80 object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
+      {/* ===================== SERVICE 1: KAALSARP PUJA ===================== */}
+      <section id="kaalsarp-puja" className="border-b border-[#D98E2B]/30 bg-[#FBF3E7] py-10 sm:py-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-2 lg:gap-10">
+            <div className="overflow-hidden rounded-2xl border-2 border-[#D98E2B]/60 shadow-lg">
+              <img
+                src="/images/kaal_sarp_puja.webp"
+                alt="Real photograph: Kaalsarp Puja samagri — silver Nag-Nagin pairs and flowers arranged for the puja at Trimbakeshwar"
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/3] w-full object-cover"
+              />
             </div>
 
-            <div className="lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6B0F1A]/10 text-[#6B0F1A] text-xs font-semibold uppercase">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
-                <span>{t.whyChooseBadge}</span>
-              </div>
-
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#6B0F1A]">
-                {t.whyChooseTitle}
+            <div className="space-y-3">
+              <h2 className="font-hindi text-2xl font-bold text-[#6B0F1A] sm:text-3xl">
+                कालसर्प पूजा
               </h2>
-
-              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
-                {t.whyChooseDesc}
+              <h3 className="font-serif text-lg font-semibold text-[#241A16] sm:text-xl">
+                Kaalsarp Puja at Trimbakeshwar
+              </h3>
+              <p className="font-hindi-body text-sm leading-relaxed text-gray-700 sm:text-base">
+                {hi
+                  ? 'कालसर्प दोष शांति पूजा त्र्यंबकेश्वर क्षेत्र में वैदिक विधि से संकल्प, मंत्र जाप, अभिषेक एवं हवन के साथ संपन्न होती है। बुकिंग से पहले पंडित जी तिथि, सामग्री एवं संपूर्ण प्रक्रिया का स्पष्ट मार्गदर्शन करते हैं।'
+                  : 'Kaal Sarp Dosh Shanti Puja is performed at the Trimbakeshwar Kshetra as per Vedic vidhi — with sankalp, mantra jaap, abhishek and havan. Before you book, the pandit ji clearly guides you on auspicious dates, samagri and the complete process.'}
               </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
-                <div className="p-3 rounded-lg bg-white border border-[#D98E2B]/30 flex items-start gap-2 shadow-sm">
-                  <Flame className="w-4 h-4 text-[#E2711D] shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-[#6B0F1A] block font-bold">{t.pureSamagriTitle}</strong>
-                    <span className="text-gray-600">{t.pureSamagriDesc}</span>
-                  </div>
-                </div>
-
-                <div className="p-3 rounded-lg bg-white border border-[#D98E2B]/30 flex items-start gap-2 shadow-sm">
-                  <Globe className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-[#6B0F1A] block font-bold">{t.nriSupportTitle}</strong>
-                    <span className="text-gray-600">{t.nriSupportDesc}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-2 flex gap-3">
-                <button
-                  onClick={() =>
-                    onOpenWhatsAppWithCustomText(
-                      'Hari Om Acharya Ji. I wish to know more about your Purohit family lineage and services.'
-                    )
-                  }
-                  className="px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs shadow-md"
-                >
-                  {t.whatsappAcharya}
-                </button>
-                <a
-                  href="tel:+919109695176"
-                  id="home-call-btn"
-                  aria-label="Call Now"
-                  className="px-5 py-2.5 rounded-xl bg-[#B5121B] hover:bg-[#6B0F1A] text-white font-bold text-xs border border-[#D98E2B] shadow-md"
-                >
-                  <span className="pointer-events-none">Call +91 91096 95176</span>
-                </a>
+              <div className="pt-2">
+                <CallCta
+                  id="kaalsarp-call-btn"
+                  event="kaalsarp_call_click"
+                  labelEn={hi ? 'कालसर्प पूजा हेतु कॉल करें' : 'Call for Kaalsarp Puja Enquiry'}
+                />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Devotee Testimonials */}
-      <section className="py-12 sm:py-16 bg-[#FBF3E7] text-[#241A16] border-b border-[#D98E2B]/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-bold text-[#B5121B] uppercase tracking-wider">
-              {t.homeTestimonialsSub}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#6B0F1A]">
-              {t.homeTestimonialsHeading}
+      {/* ================== SERVICE 2: NARAYAN NAGBALI PUJA ================== */}
+      <section id="narayan-nagbali" className="border-b border-[#D98E2B]/30 bg-white py-10 sm:py-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-2 lg:gap-10">
+            <div className="order-1 lg:order-2 overflow-hidden rounded-2xl border-2 border-[#D98E2B]/60 shadow-lg">
+              <img
+                src="/images/narayan_nagbali.jpg"
+                alt="Real photograph: Pandit performing the Narayan Nagbali ritual offering at Trimbakeshwar"
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/3] w-full object-cover"
+              />
+            </div>
+
+            <div className="order-2 lg:order-1 space-y-3">
+              <h2 className="font-hindi text-2xl font-bold text-[#6B0F1A] sm:text-3xl">
+                नारायण नागबली पूजा
+              </h2>
+              <h3 className="font-serif text-lg font-semibold text-[#241A16] sm:text-xl">
+                Narayan Nagbali Puja at Trimbakeshwar
+              </h3>
+              <p className="font-hindi-body text-sm leading-relaxed text-gray-700 sm:text-base">
+                {hi
+                  ? 'नारायण नागबली त्र्यंबकेश्वर में शास्त्र विधि से संपन्न होने वाली पारंपरिक पूजा है। आपकी यात्रा की योजना बनाने से पहले पंडित जी फोन पर प्रक्रिया, तिथि, सामग्री और आवश्यकताओं की पूरी जानकारी देते हैं।'
+                  : 'Narayan Nagbali is a traditional ritual performed at Trimbakeshwar as per shastra vidhi. Before you plan your visit, the pandit ji explains the process, dates, samagri and requirements clearly on call.'}
+              </p>
+              <div className="pt-2">
+                <CallCta
+                  id="nagbali-call-btn"
+                  event="narayan_nagbali_call_click"
+                  labelEn={hi ? 'नारायण नागबली हेतु कॉल करें' : 'Call for Narayan Nagbali Enquiry'}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== TRIMBAKESHWAR KSHETRA ===================== */}
+      <section id="trimbakeshwar" className="border-b border-[#D98E2B]/30 bg-[#F3E6D3] py-10 sm:py-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mx-auto max-w-3xl space-y-2 text-center">
+            <h2 className="font-hindi text-2xl font-bold text-[#6B0F1A] sm:text-3xl">
+              त्र्यंबकेश्वर ज्योतिर्लिंग, नासिक
             </h2>
-            <div className="gold-divider w-24 mx-auto" />
+            <h3 className="font-serif text-lg font-semibold text-[#241A16]">
+              The Sacred Kshetra Where Your Puja Is Performed
+            </h3>
+            <p className="font-hindi-body text-sm leading-relaxed text-gray-700 sm:text-base">
+              {hi
+                ? 'त्र्यंबकेश्वर बारह ज्योतिर्लिंगों में से एक है, जहाँ ब्रह्मा, विष्णु और महेश एक ही लिंग में विराजमान हैं। कुशावर्त कुंड से गोदावरी का उद्गम होता है और ब्रह्मगिरि पर्वत इस क्षेत्र की पवित्रता को पूर्ण करता है।'
+                : 'Trimbakeshwar is one of the twelve Jyotirlingas, where Brahma, Vishnu and Mahesh reside in a single linga. The Godavari rises at Kushavarta Kund, and the Brahmagiri hills complete the sanctity of the kshetra.'}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {TESTIMONIALS.map((test) => (
-              <div
-                key={test.id}
-                className="p-5 rounded-2xl bg-white border border-[#D98E2B]/40 shadow-sm flex flex-col justify-between space-y-4 hover:border-[#D98E2B] transition-colors"
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <figure className="overflow-hidden rounded-2xl border-2 border-[#D98E2B]/60 bg-white shadow-md">
+              <img
+                src="/images/Trimbakeshwar_Mandir.webp"
+                srcSet="/images/Trimbakeshwar_Mandir-640.webp 640w, /images/Trimbakeshwar_Mandir.webp 960w"
+                sizes="(max-width: 640px) 100vw, 33vw"
+                alt="Real photograph: Trimbakeshwar Jyotirlinga Temple — black stone shikhara, Nashik"
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/3] w-full object-cover"
+              />
+              <figcaption className="px-3 py-2 text-center text-[11px] font-semibold text-[#6B0F1A]">
+                {hi ? 'त्र्यंबकेश्वर मंदिर' : 'Trimbakeshwar Temple'}
+              </figcaption>
+            </figure>
+            <figure className="overflow-hidden rounded-2xl border-2 border-[#D98E2B]/60 bg-white shadow-md">
+              <img
+                src="/images/kushavarth_kund.webp"
+                alt="Real photograph: Kushavarta Kund at Trimbakeshwar, origin of the Godavari river"
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/3] w-full object-cover"
+              />
+              <figcaption className="flex items-center justify-center gap-1 px-3 py-2 text-center text-[11px] font-semibold text-[#6B0F1A]">
+                <Droplets className="h-3 w-3 text-[#B5121B]" aria-hidden="true" />
+                {hi ? 'कुशावर्त कुंड' : 'Kushavarta Kund'}
+              </figcaption>
+            </figure>
+            <figure className="overflow-hidden rounded-2xl border-2 border-[#D98E2B]/60 bg-white shadow-md">
+              <img
+                src="/images/bramahagiri.webp"
+                alt="Real photograph: Brahmagiri hills above Trimbakeshwar, Nashik"
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/3] w-full object-cover"
+              />
+              <figcaption className="flex items-center justify-center gap-1 px-3 py-2 text-center text-[11px] font-semibold text-[#6B0F1A]">
+                <Mountain className="h-3 w-3 text-[#B5121B]" aria-hidden="true" />
+                {hi ? 'ब्रह्मगिरि पर्वत' : 'Brahmagiri Hills'}
+              </figcaption>
+            </figure>
+          </div>
+
+          <p className="mx-auto mt-6 max-w-2xl text-center text-xs leading-relaxed text-gray-600 sm:text-sm">
+            {hi
+              ? 'त्र्यंबकेश्वर, जिला नासिक (महाराष्ट्र) — नासिक शहर से लगभग 28 किमी। पूजा की योजना से पहले पंडित जी से पहुँच एवं ठहराव का मार्गदर्शन प्राप्त करें।'
+              : 'Trimbakeshwar, Nashik district (Maharashtra) — about 28 km from Nashik city. The pandit ji can guide you on arrival and stay when you plan your puja.'}
+          </p>
+        </div>
+      </section>
+
+      {/* ===================== FAQ / COMMON QUESTIONS ===================== */}
+      <section id="faq" className="border-b border-[#D98E2B]/30 bg-[#FBF3E7] py-10 sm:py-14">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <div className="space-y-1.5 text-center">
+            <h2 className="font-hindi text-2xl font-bold text-[#6B0F1A] sm:text-3xl">
+              सामान्य प्रश्न
+            </h2>
+            <h3 className="font-serif text-base font-semibold text-[#241A16] sm:text-lg">
+              Common Questions
+            </h3>
+          </div>
+
+          <div className="mt-6 space-y-3">
+            {FAQ_ITEMS.map((faq) => (
+              <details
+                key={faq.qEn}
+                className="faq-details group rounded-xl border border-[#D98E2B]/30 bg-white shadow-sm open:shadow-md"
               >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex gap-0.5 text-amber-500">
-                      {[...Array(test.rating)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                      ))}
-                    </div>
-                    {test.isNRI && (
-                      <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">
-                        {t.nriClientBadge}
-                      </span>
-                    )}
-                  </div>
-
-                  <p className="text-xs text-gray-700 italic leading-relaxed line-clamp-4">
-                    "{L(test.comment)}"
-                  </p>
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3.5">
+                  <span>
+                    <span className="font-hindi block text-sm font-semibold text-[#6B0F1A]">
+                      {faq.qHi}
+                    </span>
+                    <span className="block text-xs text-gray-600 sm:text-[13px]">{faq.qEn}</span>
+                  </span>
+                  <ChevronDown
+                    className="faq-chevron h-4 w-4 shrink-0 text-[#B5121B]"
+                    aria-hidden="true"
+                  />
+                </summary>
+                <div className="border-t border-[#D98E2B]/20 px-4 py-3.5">
+                  <p className="font-hindi-body text-sm leading-relaxed text-gray-700">{hi ? faq.aHi : faq.aEn}</p>
                 </div>
-
-                <div className="pt-3 border-t border-gray-100 text-xs">
-                  <p className="font-serif font-bold text-[#6B0F1A]">{test.name}</p>
-                  <p className="text-[11px] text-gray-500">
-                    {L(test.location)} • <span className="text-[#B5121B] font-semibold">{L(test.pujaPerformed)}</span>
-                  </p>
-                </div>
-              </div>
+              </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Direct Inquire CTA Banner */}
-      <section className="py-12 bg-white text-[#241A16]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="p-8 rounded-2xl bg-[#F3E6D3] border-2 border-[#D98E2B] shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-            <div className="space-y-1">
-              <h3 className="text-2xl font-serif font-bold text-[#6B0F1A]">
-                {t.ctaQuestion}
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-700">
-                {t.ctaDesc}
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
-              <button
-                onClick={() => onSelectSection('contact')}
-                className="px-6 py-3 rounded-xl bg-[#6B0F1A] hover:bg-[#8F0E15] text-[#F5E9D8] font-bold text-xs border border-[#D98E2B] shadow-md"
-              >
-                {t.inquireOnline}
-              </button>
-              <button
-                onClick={() =>
-                  onOpenWhatsAppWithCustomText(
-                    'Hari Om Acharya Ji. I am seeking guidance on Puja at Trimbakeshwar.'
-                  )
-                }
-                className="px-6 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs shadow-md"
-              >
-                {t.whatsappDirectly}
-              </button>
-            </div>
+      {/* ===================== FINAL CALL CTA ===================== */}
+      <section className="bg-[#6B0F1A] py-10 sm:py-14">
+        <div className="mx-auto max-w-3xl space-y-4 px-4 text-center sm:px-6">
+          <h2 className="font-hindi text-2xl font-bold text-[#F5E9D8] sm:text-3xl">
+            पंडित जी से सीधी बात करें
+          </h2>
+          <p className="font-serif text-base font-semibold text-[#EFC268] sm:text-lg">
+            Speak Directly to the Pandit — {BUSINESS_PHONE_DISPLAY}
+          </p>
+          <p className="font-hindi-body mx-auto max-w-xl text-sm leading-relaxed text-[#F5E9D8]/85">
+            {hi
+              ? 'तिथि, विधि, सामग्री और बुकिंग की संपूर्ण जानकारी एक ही फोन कॉल पर। प्रातः 6 – रात्रि 9:30 IST।'
+              : 'Dates, vidhi, samagri and booking details on a single phone call. 6 AM – 9:30 PM IST daily.'}
+          </p>
+          <div className="flex flex-col items-center justify-center gap-3 pt-2 sm:flex-row">
+            <CallCta
+              id="final-call-btn"
+              event="final_call_click"
+              labelEn={hi ? 'अभी कॉल करें' : 'Call Now'}
+              large
+            />
+            <a
+              href={whatsappUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent('whatsapp_click', { cta_location: 'final_section' })}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#25D366]/60 bg-[#25D366]/10 px-6 py-3.5 text-sm font-bold text-[#7BE495] transition-colors hover:bg-[#25D366]/20"
+            >
+              {hi ? 'व्हाट्सएप करें' : 'WhatsApp'}
+            </a>
           </div>
         </div>
       </section>
