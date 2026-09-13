@@ -11,6 +11,12 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     
     // Navigation
     navHome: 'Home',
+    // The two dedicated homepages (one per puja) listed in the Home menu.
+    navKaalsarpHome: 'Kaalsarp Puja',
+    navKaalsarpHomeSub: 'Dedicated Kaalsarp Puja homepage',
+    navNagbaliHome: 'Narayan Nagbali Puja',
+    navNagbaliHomeSub: 'Dedicated Narayan Nagbali homepage',
+    navHomeMenuLabel: 'Choose a homepage',
     navHistory: 'History & Temple',
     navServices: 'Puja Services',
     navAbout: 'About Us',
@@ -178,6 +184,12 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
 
     // Navigation
     navHome: 'मुख्य पृष्ठ',
+    // The two dedicated homepages (one per puja) listed in the Home menu.
+    navKaalsarpHome: 'कालसर्प पूजा',
+    navKaalsarpHomeSub: 'कालसर्प पूजा का मुख्य पृष्ठ',
+    navNagbaliHome: 'नारायण नागबली पूजा',
+    navNagbaliHomeSub: 'नारायण नागबली पूजा का मुख्य पृष्ठ',
+    navHomeMenuLabel: 'मुख्य पृष्ठ चुनें',
     navHistory: 'इतिहास एवं मंदिर',
     navServices: 'पूजा सेवाएं',
     navAbout: 'हमारे बारे में',

@@ -1,25 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { Phone, MessageSquare, Menu, X, Clock, MapPin, Globe, Languages } from 'lucide-react';
-import { SectionId, Language } from '../types';
+import React, { useState, useEffect, useRef } from 'react';
+import { Phone, MessageSquare, Menu, X, Clock, MapPin, Globe, Languages, ChevronDown, Check } from 'lucide-react';
+import { SectionId, Language, HomeVariant } from '../types';
 import { TRANSLATIONS } from '../data/translations';
+import { HOME_PATHS } from '../lib/routes';
 
 interface HeaderProps {
   activeSection: SectionId;
   onSelectSection: (id: SectionId) => void;
+  /** Which dedicated homepage is currently shown (Kaalsarp `/` or Nagbali `/narayan-nagbali-puja`). */
+  homeVariant: HomeVariant;
+  /** Switch between the two dedicated puja homepages. */
+  onSelectHome: (variant: HomeVariant) => void;
   onOpenWhatsAppBuilder: () => void;
   lang: Language;
   onToggleLanguage: () => void;
 }
 
+/**
+ * The site has one homepage per puja:
+ *   • Kaalsarp Puja        -> /
+ *   • Narayan Nagbali Puja -> /narayan-nagbali-puja
+ * Both are listed in the nav bar (desktop: "Home" menu, mobile: two entries).
+ */
+const HOME_LINKS: { variant: HomeVariant; labelKey: string; subKey: string }[] = [
+  { variant: 'kaalsarp', labelKey: 'navKaalsarpHome', subKey: 'navKaalsarpHomeSub' },
+  { variant: 'nagbali', labelKey: 'navNagbaliHome', subKey: 'navNagbaliHomeSub' },
+];
+
 export const Header: React.FC<HeaderProps> = ({
   activeSection,
   onSelectSection,
+  homeVariant,
+  onSelectHome,
   onOpenWhatsAppBuilder,
   lang,
   onToggleLanguage
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [homeMenuOpen, setHomeMenuOpen] = useState(false);
   const [istTime, setIstTime] = useState('');
+  const homeMenuRef = useRef<HTMLDivElement | null>(null);
 
   const t = TRANSLATIONS[lang];
 
@@ -39,8 +59,30 @@ export const Header: React.FC<HeaderProps> = ({
     return () => clearInterval(timer);
   }, []);
 
+  // Close the Home menu on Escape or on a click/tap outside of it.
+  useEffect(() => {
+    if (!homeMenuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setHomeMenuOpen(false);
+    };
+    const onPointerDown = (e: MouseEvent | TouchEvent) => {
+      if (homeMenuRef.current && !homeMenuRef.current.contains(e.target as Node)) {
+        setHomeMenuOpen(false);
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('mousedown', onPointerDown);
+    document.addEventListener('touchstart', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('touchstart', onPointerDown);
+    };
+  }, [homeMenuOpen]);
+
+  // Sections shared by both homepages. The homepages themselves are rendered
+  // separately as the "Home" menu so both puja URLs stay one click away.
   const navItems: { id: SectionId; label: string }[] = [
-    { id: 'home', label: t.navHome },
     { id: 'history', label: t.navHistory },
     { id: 'services', label: t.navServices },
     { id: 'about', label: t.navAbout },
@@ -49,10 +91,27 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'contact', label: t.navContact }
   ];
 
+  const isHomeActive = activeSection === 'home';
+
   const handleNavClick = (id: SectionId) => {
+    setHomeMenuOpen(false);
     onSelectSection(id);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  /**
+   * Navigate to one of the two dedicated homepages. The real href is kept on
+   * the anchor (crawlable link + middle-click / open-in-new-tab works), while
+   * a normal click is handled in-app so no full page reload is needed.
+   */
+  const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>, variant: HomeVariant) => {
+    // Let the browser handle modifier-clicks and new-tab opens natively.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    setHomeMenuOpen(false);
+    setMobileMenuOpen(false);
+    onSelectHome(variant);
   };
 
   return (
@@ -116,6 +175,84 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-1">
+          {/* Home menu — the two dedicated puja homepages */}
+          <div
+            ref={homeMenuRef}
+            className="relative"
+            onMouseEnter={() => setHomeMenuOpen(true)}
+            onMouseLeave={() => setHomeMenuOpen(false)}
+          >
+            <button
+              type="button"
+              onClick={() => setHomeMenuOpen((open) => !open)}
+              aria-haspopup="true"
+              aria-expanded={homeMenuOpen}
+              className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 relative flex items-center gap-1 ${isHomeActive
+                ? 'text-[#D98E2B] bg-[#4A0B12] font-semibold'
+                : 'text-[#F5E9D8] hover:text-[#D98E2B] hover:bg-[#4A0B12]/40'
+                }`}
+            >
+              {t.navHome}
+              <ChevronDown
+                className={`w-3.5 h-3.5 transition-transform duration-200 ${homeMenuOpen ? 'rotate-180' : ''
+                  }`}
+              />
+              {isHomeActive && (
+                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#D98E2B] rounded-full" />
+              )}
+            </button>
+
+            {/* Panel stays mounted (hidden) so both homepage URLs remain
+                crawlable internal links at all times. The `pt-2` is a
+                transparent hover bridge — the card itself sits 8px below the
+                button without the pointer ever leaving the menu. */}
+            <div
+              className={`absolute left-0 top-full z-50 pt-2 transition-all duration-150 ${homeMenuOpen
+                ? 'visible opacity-100 translate-y-0'
+                : 'invisible opacity-0 -translate-y-1 pointer-events-none'
+                }`}
+            >
+              <div
+                role="menu"
+                aria-label={t.navHomeMenuLabel}
+                className="w-72 origin-top-left rounded-xl border border-[#D98E2B]/40 bg-[#4A0B12] p-1.5 shadow-2xl"
+              >
+                <p className="px-2.5 pt-1.5 pb-1 text-[10px] font-semibold uppercase tracking-wider text-[#D98E2B]/80">
+                  {t.navHomeMenuLabel}
+                </p>
+                {HOME_LINKS.map((link) => {
+                  const isCurrent = isHomeActive && homeVariant === link.variant;
+                  return (
+                    <a
+                      key={link.variant}
+                      href={HOME_PATHS[link.variant]}
+                      role="menuitem"
+                      onClick={(e) => handleHomeClick(e, link.variant)}
+                      className={`flex items-start gap-2 rounded-lg px-2.5 py-2 transition-colors ${isCurrent
+                        ? 'bg-[#6B0F1A] text-[#D98E2B]'
+                        : 'text-[#F5E9D8] hover:bg-[#6B0F1A]/60 hover:text-[#D98E2B]'
+                        }`}
+                    >
+                      <Check
+                        className={`mt-0.5 w-3.5 h-3.5 shrink-0 ${isCurrent ? 'opacity-100' : 'opacity-0'
+                          }`}
+                        aria-hidden="true"
+                      />
+                      <span className="min-w-0">
+                        <span className="block text-sm font-semibold leading-tight">
+                          {t[link.labelKey]}
+                        </span>
+                        <span className="block text-[11px] leading-snug text-[#F5E9D8]/70">
+                          {t[link.subKey]}
+                        </span>
+                      </span>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
@@ -187,6 +324,33 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-[#4A0B12] border-t border-[#D98E2B]/30 px-4 py-3 space-y-1 shadow-2xl animate-fadeIn">
+          {/* The two dedicated puja homepages */}
+          <p className="px-3.5 pb-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#D98E2B]/80">
+            {t.navHomeMenuLabel}
+          </p>
+          {HOME_LINKS.map((link) => {
+            const isCurrent = isHomeActive && homeVariant === link.variant;
+            return (
+              <a
+                key={link.variant}
+                href={HOME_PATHS[link.variant]}
+                onClick={(e) => handleHomeClick(e, link.variant)}
+                className={`flex items-center justify-between gap-2 px-3.5 py-2 rounded-lg text-xs font-medium transition-colors ${isCurrent
+                  ? 'bg-[#6B0F1A] text-[#D98E2B] font-semibold border-l-4 border-[#D98E2B]'
+                  : 'text-[#F5E9D8] hover:bg-[#6B0F1A]/50 hover:text-[#D98E2B]'
+                  }`}
+              >
+                <span>{t[link.labelKey]}</span>
+                <Check
+                  className={`w-3.5 h-3.5 shrink-0 ${isCurrent ? 'opacity-100' : 'opacity-0'}`}
+                  aria-hidden="true"
+                />
+              </a>
+            );
+          })}
+
+          <div className="pt-1 pb-1 border-b border-[#D98E2B]/20" />
+
           {navItems.map((item) => (
             <button
               key={item.id}
