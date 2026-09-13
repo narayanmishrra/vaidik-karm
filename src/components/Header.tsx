@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, MessageSquare, Menu, X, Clock, MapPin, Globe, Languages } from 'lucide-react';
-import { SectionId, Language } from '../types';
+import { SectionId, Language, HomeVariant } from '../types';
 import { TRANSLATIONS } from '../data/translations';
+import { NAGBALI_HOME_PATH } from '../lib/routes';
 
 interface HeaderProps {
   activeSection: SectionId;
@@ -9,6 +10,10 @@ interface HeaderProps {
   onOpenWhatsAppBuilder: () => void;
   lang: Language;
   onToggleLanguage: () => void;
+  /** Which homepage the 'home' slot currently points at. */
+  homeVariant?: HomeVariant;
+  /** Switches between the Kaalsarp homepage and the Narayan Nagbali homepage. */
+  onSelectHome?: (variant: HomeVariant) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -16,7 +21,9 @@ export const Header: React.FC<HeaderProps> = ({
   onSelectSection,
   onOpenWhatsAppBuilder,
   lang,
-  onToggleLanguage
+  onToggleLanguage,
+  homeVariant = 'kaalsarp',
+  onSelectHome
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [istTime, setIstTime] = useState('');
@@ -39,21 +46,80 @@ export const Header: React.FC<HeaderProps> = ({
     return () => clearInterval(timer);
   }, []);
 
-  const navItems: { id: SectionId; label: string }[] = [
-    { id: 'home', label: t.navHome },
-    { id: 'history', label: t.navHistory },
-    { id: 'services', label: t.navServices },
-    { id: 'about', label: t.navAbout },
-    { id: 'gallery', label: t.navGallery },
-    { id: 'blog', label: t.navBlog },
-    { id: 'contact', label: t.navContact }
-  ];
-
   const handleNavClick = (id: SectionId) => {
     onSelectSection(id);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const handleHomeClick = (variant: HomeVariant) => {
+    onSelectHome?.(variant);
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  /**
+   * Nav entries. The first two are the two homepages — identical pages whose
+   * hero title points at Kaalsarp Puja vs. Narayan Nagbali Puja. The Nagbali
+   * entry carries a real href so search engines can crawl the extended URL.
+   */
+  const navItems: {
+    key: string;
+    label: string;
+    isActive: boolean;
+    href?: string;
+    onClick: () => void;
+  }[] = [
+    {
+      key: 'home',
+      label: t.navHome,
+      isActive: activeSection === 'home' && homeVariant === 'kaalsarp',
+      onClick: () => handleHomeClick('kaalsarp'),
+    },
+    {
+      key: 'nagbali',
+      label: t.navNagbali,
+      href: NAGBALI_HOME_PATH,
+      isActive: activeSection === 'home' && homeVariant === 'nagbali',
+      onClick: () => handleHomeClick('nagbali'),
+    },
+    {
+      key: 'history',
+      label: t.navHistory,
+      isActive: activeSection === 'history',
+      onClick: () => handleNavClick('history'),
+    },
+    {
+      key: 'services',
+      label: t.navServices,
+      isActive: activeSection === 'services',
+      onClick: () => handleNavClick('services'),
+    },
+    {
+      key: 'about',
+      label: t.navAbout,
+      isActive: activeSection === 'about',
+      onClick: () => handleNavClick('about'),
+    },
+    {
+      key: 'gallery',
+      label: t.navGallery,
+      isActive: activeSection === 'gallery',
+      onClick: () => handleNavClick('gallery'),
+    },
+    {
+      key: 'blog',
+      label: t.navBlog,
+      isActive: activeSection === 'blog',
+      onClick: () => handleNavClick('blog'),
+    },
+    {
+      key: 'contact',
+      label: t.navContact,
+      isActive: activeSection === 'contact',
+      onClick: () => handleNavClick('contact'),
+    },
+  ];
 
   return (
     <header className="sticky top-0 z-40 bg-[#6B0F1A] text-[#F5E9D8] shadow-md border-b-2 border-[#D98E2B]">
@@ -117,20 +183,37 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-1">
           {navItems.map((item) => {
-            const isActive = activeSection === item.id;
+            const classes = `inline-flex items-center whitespace-nowrap px-2 xl:px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 relative ${
+              item.isActive
+                ? 'text-[#D98E2B] bg-[#4A0B12] font-semibold'
+                : 'text-[#F5E9D8] hover:text-[#D98E2B] hover:bg-[#4A0B12]/40'
+            }`;
+            const activeBar = item.isActive && (
+              <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#D98E2B] rounded-full" />
+            );
+
+            // Homepage variants are real URLs, so they render as crawlable links.
+            if (item.href) {
+              return (
+                <a
+                  key={item.key}
+                  href={item.href}
+                  className={classes}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    item.onClick();
+                  }}
+                >
+                  {item.label}
+                  {activeBar}
+                </a>
+              );
+            }
+
             return (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 relative ${isActive
-                  ? 'text-[#D98E2B] bg-[#4A0B12] font-semibold'
-                  : 'text-[#F5E9D8] hover:text-[#D98E2B] hover:bg-[#4A0B12]/40'
-                  }`}
-              >
+              <button key={item.key} onClick={item.onClick} className={classes}>
                 {item.label}
-                {isActive && (
-                  <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#D98E2B] rounded-full" />
-                )}
+                {activeBar}
               </button>
             );
           })}
@@ -187,18 +270,35 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-[#4A0B12] border-t border-[#D98E2B]/30 px-4 py-3 space-y-1 shadow-2xl animate-fadeIn">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => handleNavClick(item.id)}
-              className={`w-full text-left px-3.5 py-2 rounded-lg text-xs font-medium transition-colors ${activeSection === item.id
+          {navItems.map((item) => {
+            const classes = `block w-full text-left px-3.5 py-2 rounded-lg text-xs font-medium transition-colors ${
+              item.isActive
                 ? 'bg-[#6B0F1A] text-[#D98E2B] font-semibold border-l-4 border-[#D98E2B]'
                 : 'text-[#F5E9D8] hover:bg-[#6B0F1A]/50 hover:text-[#D98E2B]'
-                }`}
-            >
-              {item.label}
-            </button>
-          ))}
+            }`;
+
+            if (item.href) {
+              return (
+                <a
+                  key={item.key}
+                  href={item.href}
+                  className={classes}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    item.onClick();
+                  }}
+                >
+                  {item.label}
+                </a>
+              );
+            }
+
+            return (
+              <button key={item.key} onClick={item.onClick} className={classes}>
+                {item.label}
+              </button>
+            );
+          })}
 
           <div className="pt-2 border-t border-[#D98E2B]/20 grid grid-cols-2 gap-2">
             <button

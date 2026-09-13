@@ -11,6 +11,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     
     // Navigation
     navHome: 'Home',
+    navNagbali: 'Narayan Nagbali',
     navHistory: 'History & Temple',
     navServices: 'Puja Services',
     navAbout: 'About Us',
@@ -178,6 +179,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
 
     // Navigation
     navHome: 'मुख्य पृष्ठ',
+    navNagbali: 'नारायण नागबली पूजा',
     navHistory: 'इतिहास एवं मंदिर',
     navServices: 'पूजा सेवाएं',
     navAbout: 'हमारे बारे में',

@@ -1,5 +1,13 @@
 export type SectionId = 'home' | 'history' | 'services' | 'about' | 'gallery' | 'blog' | 'contact';
 
+/**
+ * Which of the two homepages is being rendered. Both URLs render the exact
+ * same HomePage; only the hero title (and route meta) is variant-specific.
+ *   'kaalsarp' → '/'  (main homepage)
+ *   'nagbali'  → '/narayan-nagbali-puja-trimbakeshwar'
+ */
+export type HomeVariant = 'kaalsarp' | 'nagbali';
+
 export type Language = 'en' | 'hi';
 
 // Bilingual string helper type

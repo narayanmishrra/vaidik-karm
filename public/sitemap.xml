@@ -16,6 +16,15 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://www.kaalsarpintrimbakeshwar.com/narayan-nagbali-puja-trimbakeshwar</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.kaalsarpintrimbakeshwar.com/images/narayan_nagbali.jpg</image:loc>
+      <image:title>Narayan Nagbali Puja in Trimbakeshwar - Narayan Nagbali at Trimbakeshwar Jyotirlinga</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://www.kaalsarpintrimbakeshwar.com/#blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

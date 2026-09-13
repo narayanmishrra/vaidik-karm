@@ -25,13 +25,15 @@
   <!-- Canonical URL (prevents duplicate-content / http vs https split) -->
   <link rel="canonical" href="https://www.kaalsarpintrimbakeshwar.com/" />
 
-  <!-- Preload the first hero gallery photograph (LCP) on the homepage so
-       Google Ads visitors see a real puja photo as fast as possible.
+  <!-- Preload the first hero gallery photograph (LCP) on both homepages
+       ('/' for Kaalsarp Puja and /narayan-nagbali-puja-trimbakeshwar for
+       Narayan Nagbali Puja — the same hero artwork) so Google Ads visitors
+       see a real puja photo as fast as possible.
        Skipped on other routes (e.g. the /kaal-sarp-puja landing page). -->
   <script>
     (function () {
-      var p = location.pathname;
-      if (p === '/' || p === '' || p === '/index.html') {
+      var p = location.pathname.replace(/\/+$/, '') || '/';
+      if (p === '/' || p === '/index.html' || p === '/narayan-nagbali-puja-trimbakeshwar') {
         var l = document.createElement('link');
         l.rel = 'preload';
         l.as = 'image';

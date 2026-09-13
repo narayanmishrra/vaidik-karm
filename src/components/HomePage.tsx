@@ -10,7 +10,9 @@ import {
   Droplets,
 } from 'lucide-react';
 import { HeroSection } from './HeroSection';
-import { SectionId, Language } from '../types';
+import { SectionId, Language, HomeVariant } from '../types';
+import { HOME_VARIANTS } from '../lib/routes';
+import { usePageMeta } from '../hooks/usePageMeta';
 import {
   trackEvent,
   whatsappUrl,
@@ -24,6 +26,13 @@ interface HomePageProps {
   onOpenWhatsAppWithCustomText: (text: string) => void;
   onSelectPuja: (pujaId: string) => void;
   lang: Language;
+  /**
+   * 'kaalsarp' → main homepage at '/'
+   * 'nagbali'  → homepage at '/narayan-nagbali-puja-trimbakeshwar'
+   * Only the hero title and the route's SEO metadata change; the page itself
+   * (CTA, both puja service blocks, kshetra, FAQ, final CTA) is identical.
+   */
+  variant?: HomeVariant;
 }
 
 /* ------------------------------------------------------------------ */
@@ -118,13 +127,19 @@ const CallCta: React.FC<{
   </a>
 );
 
-export const HomePage: React.FC<HomePageProps> = ({ lang }) => {
+export const HomePage: React.FC<HomePageProps> = ({ lang, variant = 'kaalsarp' }) => {
   const hi = lang === 'hi';
+
+  /* Route-level SEO metadata (title / description / canonical / OG / JSON-LD).
+     The two homepage URLs serve the same page, so each one carries its own
+     canonical + title while the visible content stays identical. */
+  usePageMeta(HOME_VARIANTS[variant].meta);
 
   return (
     <div>
       {/* ============ HERO: real gallery + bilingual headline + call ============ */}
-      <HeroSection lang={lang} />
+      {/* Only the hero title is variant-specific — everything below is shared. */}
+      <HeroSection lang={lang} variant={variant} />
 
       {/* ===================== TRUST / QUICK BENEFITS ===================== */}
       <section className="border-b border-[#D98E2B]/30 bg-white py-6 sm:py-8">

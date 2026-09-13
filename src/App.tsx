@@ -1,6 +1,12 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { KaalSarpLandingPage } from './components/KaalSarpLandingPage';
-import { SectionId, Language } from './types';
+import { SectionId, Language, HomeVariant } from './types';
+import {
+  KAAL_SARP_LANDING_PATH,
+  NAGBALI_HOME_PATH,
+  homeVariantFromPath,
+  normalizePath,
+} from './lib/routes';
 
 /**
  * The main-site chrome (header, sections, footer) is lazy-loaded so the
@@ -54,23 +60,36 @@ export default function App() {
   const [initialPujaId, setInitialPujaId] = useState<string>('');
   const [initialPostId, setInitialPostId] = useState<string>('');
   const [isLanding, setIsLanding] = useState(false);
+  /**
+   * Which homepage is rendered when activeSection === 'home'. Derived from the
+   * pathname only — '/' is the Kaalsarp homepage, NAGBALI_HOME_PATH is the
+   * Narayan Nagbali homepage. Both serve the exact same page content.
+   */
+  const [homeVariant, setHomeVariant] = useState<HomeVariant>('kaalsarp');
 
   // Sync state with URL path + hash on mount, hashchange and popstate
-  // Expanded blog URLs (/blog/:slug) and the landing page (/kaal-sarp-puja)
+  // Expanded blog URLs (/blog/:slug), the second homepage
+  // (/narayan-nagbali-puja-trimbakeshwar) and the landing page (/kaal-sarp-puja)
   // are real paths served via vercel.json rewrites.
   useEffect(() => {
     const syncRouteFromUrl = () => {
       const path = window.location.pathname;
       const hash = window.location.hash.replace('#', '').trim();
 
+      // Homepage variant is a pure function of the pathname.
+      setHomeVariant(homeVariantFromPath(path));
+
       // Dedicated Kaal Sarp Puja landing page (Google Ads destination).
-      if (path === '/kaal-sarp-puja' || path === '/kaal-sarp-puja/' || hash === 'kaal-sarp-puja') {
+      if (
+        normalizePath(path) === KAAL_SARP_LANDING_PATH ||
+        hash === 'kaal-sarp-puja'
+      ) {
         setIsLanding(true);
         return;
       }
 
       // Leaving the landing page back into the main site.
-      if (path === '/' && hash && hash !== 'kaal-sarp-puja') {
+      if (hash && hash !== 'kaal-sarp-puja') {
         setIsLanding(false);
       }
 
@@ -160,6 +179,33 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  /**
+   * Switches between the two homepages. Both render the same HomePage — only
+   * the hero title differs — but each has its own real URL so ads, backlinks
+   * and canonicals stay separate.
+   */
+  const handleNavigateHome = (variant: HomeVariant) => {
+    const target = variant === 'nagbali' ? NAGBALI_HOME_PATH : '/';
+    const current = normalizePath(window.location.pathname);
+
+    setIsLanding(false);
+    setActiveSection('home');
+    setInitialPujaId('');
+    setInitialPostId('');
+
+    if (current === normalizePath(target) && !window.location.hash) {
+      // Already on that homepage — just scroll back to the hero.
+      setHomeVariant(variant);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    window.history.pushState({}, '', target);
+    // Re-read the URL through the same code path as back/forward navigation.
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleSelectPuja = (pujaId: string) => {
     setInitialPujaId(pujaId);
     setActiveSection('services');
@@ -173,6 +219,7 @@ export default function App() {
   const handleExitLanding = (section?: 'home' | 'services' | 'about' | 'blog' | 'contact') => {
     setIsLanding(false);
     window.history.replaceState({}, '', '/');
+    setHomeVariant('kaalsarp');
     setInitialPujaId('');
     setInitialPostId('');
     if (section && section !== 'home') {
@@ -199,6 +246,8 @@ export default function App() {
           onOpenWhatsAppBuilder={handleOpenWhatsAppWithCustomText}
           lang={lang}
           onToggleLanguage={toggleLanguage}
+          homeVariant={homeVariant}
+          onSelectHome={handleNavigateHome}
         />
       </Suspense>
 
@@ -212,6 +261,7 @@ export default function App() {
               onOpenWhatsAppWithCustomText={handleOpenWhatsAppWithCustomText}
               onSelectPuja={handleSelectPuja}
               lang={lang}
+              variant={homeVariant}
             />
           </Suspense>
         )}
