@@ -1,9 +1,12 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { KaalSarpLandingPage } from './components/KaalSarpLandingPage';
 import { SectionId, Language, HomeVariant } from './types';
-
-/** Dedicated Narayan Nagbali home — a second homepage with an extended URL. */
-const NAGBALI_HOME_PATH = '/narayan-nagbali-puja';
+import {
+  HOME_PATHS,
+  KAAL_SARP_LANDING_PATH,
+  homeVariantFromPath,
+  isOnHomePath,
+} from './lib/routes';
 
 /**
  * The main-site chrome (header, sections, footer) is lazy-loaded so the
@@ -73,12 +76,10 @@ export default function App() {
 
       // Dedicated homepages: Kaalsarp at /, Narayan Nagbali at
       // /narayan-nagbali-puja. Only the hero headline differs.
-      setHomeVariant(
-        path === NAGBALI_HOME_PATH || path === `${NAGBALI_HOME_PATH}/` ? 'nagbali' : 'kaalsarp'
-      );
+      setHomeVariant(homeVariantFromPath(path));
 
       // Dedicated Kaal Sarp Puja landing page (Google Ads destination).
-      if (path === '/kaal-sarp-puja' || path === '/kaal-sarp-puja/' || hash === 'kaal-sarp-puja') {
+      if (path === KAAL_SARP_LANDING_PATH || path === `${KAAL_SARP_LANDING_PATH}/` || hash === 'kaal-sarp-puja') {
         setIsLanding(true);
         return;
       }
@@ -145,13 +146,42 @@ export default function App() {
   // its hero title survives section-to-section navigation.
   const resetPathForHashNavigation = () => {
     const path = window.location.pathname;
-    if (path === NAGBALI_HOME_PATH || path === `${NAGBALI_HOME_PATH}/`) {
-      window.history.replaceState({}, '', NAGBALI_HOME_PATH);
+    const variant = homeVariantFromPath(path);
+    if (isOnHomePath(path, variant)) {
+      window.history.replaceState({}, '', HOME_PATHS[variant]);
       return;
     }
     if (!/^\/(index\.html)?$/.test(path)) {
       window.history.replaceState({}, '', '/');
     }
+  };
+
+  /**
+   * Switch between the two dedicated puja homepages from the nav bar:
+   * Kaalsarp Puja (/) and Narayan Nagbali Puja (/narayan-nagbali-puja).
+   *
+   * The URL really changes (pushState, so Back/Forward work and the address
+   * bar can be copied/shared) but no full page reload happens — the section
+   * router and the head tags (title / canonical / OG) follow the variant.
+   */
+  const handleSelectHome = (variant: HomeVariant) => {
+    const path = window.location.pathname;
+    const targetPath = HOME_PATHS[variant];
+
+    if (isOnHomePath(path, variant)) {
+      // Already on this homepage — just drop any section hash so the URL
+      // matches the canonical homepage address.
+      window.history.replaceState({}, '', targetPath);
+    } else {
+      window.history.pushState({}, '', targetPath);
+    }
+
+    setIsLanding(false);
+    setHomeVariant(variant);
+    setActiveSection('home');
+    setInitialPujaId('');
+    setInitialPostId('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const toggleLanguage = () => {
@@ -194,6 +224,8 @@ export default function App() {
   const handleExitLanding = (section?: 'home' | 'services' | 'about' | 'blog' | 'contact') => {
     setIsLanding(false);
     window.history.replaceState({}, '', '/');
+    // The landing page always returns to the Kaalsarp homepage at /.
+    setHomeVariant('kaalsarp');
     setInitialPujaId('');
     setInitialPostId('');
     if (section && section !== 'home') {
@@ -217,6 +249,8 @@ export default function App() {
         <Header
           activeSection={activeSection}
           onSelectSection={handleNavigateSection}
+          homeVariant={homeVariant}
+          onSelectHome={handleSelectHome}
           onOpenWhatsAppBuilder={handleOpenWhatsAppWithCustomText}
           lang={lang}
           onToggleLanguage={toggleLanguage}
@@ -294,6 +328,7 @@ export default function App() {
       <Suspense fallback={null}>
         <Footer
           onSelectSection={handleNavigateSection}
+          onSelectHome={handleSelectHome}
           onOpenWhatsAppBuilder={handleOpenWhatsAppWithCustomText}
           onOpenSchemaModal={() => setIsSchemaModalOpen(true)}
         />

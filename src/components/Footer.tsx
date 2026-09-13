@@ -1,18 +1,35 @@
 import React from 'react';
 import { Phone, MessageSquare, MapPin, Mail, Clock, Globe, ShieldCheck, Sparkles, ChevronRight } from 'lucide-react';
-import { SectionId } from '../types';
+import { SectionId, HomeVariant } from '../types';
+import { HOME_PATHS } from '../lib/routes';
 
 interface FooterProps {
   onSelectSection: (id: SectionId) => void;
+  /** Switch between the two dedicated puja homepages (Kaalsarp / Narayan Nagbali). */
+  onSelectHome: (variant: HomeVariant) => void;
   onOpenWhatsAppBuilder: () => void;
   onOpenSchemaModal: () => void;
 }
 
+/** The two dedicated homepages, linked as real URLs so both stay crawlable. */
+const HOME_LINKS: { variant: HomeVariant; label: string }[] = [
+  { variant: 'kaalsarp', label: 'Kaalsarp Puja Home' },
+  { variant: 'nagbali', label: 'Narayan Nagbali Puja Home' },
+];
+
 export const Footer: React.FC<FooterProps> = ({
   onSelectSection,
+  onSelectHome,
   onOpenWhatsAppBuilder,
   onOpenSchemaModal
 }) => {
+  /** In-app homepage switch; the href keeps the link crawlable and shareable. */
+  const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>, variant: HomeVariant) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    onSelectHome(variant);
+  };
+
   return (
     <footer className="bg-[#4A0B12] text-[#F5E9D8] border-t-2 border-[#D98E2B] relative">
       {/* Pre-footer Call/WhatsApp CTA Banner */}
@@ -84,11 +101,17 @@ export const Footer: React.FC<FooterProps> = ({
             Quick Links
           </h5>
           <ul className="space-y-2 text-[#F5E9D8]/90">
-            <li>
-              <button onClick={() => onSelectSection('home')} className="hover:text-[#D98E2B] flex items-center gap-1">
-                <ChevronRight className="w-3 h-3 text-[#D98E2B]" /> Home
-              </button>
-            </li>
+            {HOME_LINKS.map((link) => (
+              <li key={link.variant}>
+                <a
+                  href={HOME_PATHS[link.variant]}
+                  onClick={(e) => handleHomeClick(e, link.variant)}
+                  className="hover:text-[#D98E2B] flex items-center gap-1"
+                >
+                  <ChevronRight className="w-3 h-3 text-[#D98E2B]" /> {link.label}
+                </a>
+              </li>
+            ))}
             <li>
               <button onClick={() => onSelectSection('history')} className="hover:text-[#D98E2B] flex items-center gap-1">
                 <ChevronRight className="w-3 h-3 text-[#D98E2B]" /> History & Temple
