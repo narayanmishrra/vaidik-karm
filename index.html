@@ -31,7 +31,10 @@
   <script>
     (function () {
       var p = location.pathname;
-      if (p === '/' || p === '' || p === '/index.html') {
+      if (
+        p === '/' || p === '' || p === '/index.html' ||
+        p === '/narayan-nagbali-puja' || p === '/narayan-nagbali-puja/'
+      ) {
         var l = document.createElement('link');
         l.rel = 'preload';
         l.as = 'image';

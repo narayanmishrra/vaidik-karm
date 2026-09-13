@@ -1,6 +1,9 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { KaalSarpLandingPage } from './components/KaalSarpLandingPage';
-import { SectionId, Language } from './types';
+import { SectionId, Language, HomeVariant } from './types';
+
+/** Dedicated Narayan Nagbali home — a second homepage with an extended URL. */
+const NAGBALI_HOME_PATH = '/narayan-nagbali-puja';
 
 /**
  * The main-site chrome (header, sections, footer) is lazy-loaded so the
@@ -54,14 +57,25 @@ export default function App() {
   const [initialPujaId, setInitialPujaId] = useState<string>('');
   const [initialPostId, setInitialPostId] = useState<string>('');
   const [isLanding, setIsLanding] = useState(false);
+  // Which dedicated homepage the hero belongs to. The Kaalsarp home is the
+  // main site (/) and the Narayan Nagbali home is /narayan-nagbali-puja —
+  // only the hero headline differs between them.
+  const [homeVariant, setHomeVariant] = useState<HomeVariant>('kaalsarp');
 
   // Sync state with URL path + hash on mount, hashchange and popstate
-  // Expanded blog URLs (/blog/:slug) and the landing page (/kaal-sarp-puja)
-  // are real paths served via vercel.json rewrites.
+  // Expanded blog URLs (/blog/:slug), the landing page (/kaal-sarp-puja)
+  // and the dedicated Narayan Nagbali home (/narayan-nagbali-puja) are real
+  // paths served via vercel.json rewrites.
   useEffect(() => {
     const syncRouteFromUrl = () => {
       const path = window.location.pathname;
       const hash = window.location.hash.replace('#', '').trim();
+
+      // Dedicated homepages: Kaalsarp at /, Narayan Nagbali at
+      // /narayan-nagbali-puja. Only the hero headline differs.
+      setHomeVariant(
+        path === NAGBALI_HOME_PATH || path === `${NAGBALI_HOME_PATH}/` ? 'nagbali' : 'kaalsarp'
+      );
 
       // Dedicated Kaal Sarp Puja landing page (Google Ads destination).
       if (path === '/kaal-sarp-puja' || path === '/kaal-sarp-puja/' || hash === 'kaal-sarp-puja') {
@@ -125,10 +139,17 @@ export default function App() {
     };
   }, []);
 
-  // When navigating to a hash-based section from an expanded blog URL,
+  // When navigating to a hash-based section from an expanded URL,
   // reset the pathname so the URL stays clean (e.g. /blog/x -> /#services).
+  // From the dedicated Nagbali home the path stays /narayan-nagbali-puja so
+  // its hero title survives section-to-section navigation.
   const resetPathForHashNavigation = () => {
-    if (!/^\/(index\.html)?$/.test(window.location.pathname)) {
+    const path = window.location.pathname;
+    if (path === NAGBALI_HOME_PATH || path === `${NAGBALI_HOME_PATH}/`) {
+      window.history.replaceState({}, '', NAGBALI_HOME_PATH);
+      return;
+    }
+    if (!/^\/(index\.html)?$/.test(path)) {
       window.history.replaceState({}, '', '/');
     }
   };
@@ -211,6 +232,7 @@ export default function App() {
               onOpenWhatsAppForPuja={handleOpenWhatsAppForPuja}
               onOpenWhatsAppWithCustomText={handleOpenWhatsAppWithCustomText}
               onSelectPuja={handleSelectPuja}
+              heroVariant={homeVariant}
               lang={lang}
             />
           </Suspense>

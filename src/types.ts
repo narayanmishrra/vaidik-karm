@@ -1,5 +1,13 @@
 export type SectionId = 'home' | 'history' | 'services' | 'about' | 'gallery' | 'blog' | 'contact';
 
+/**
+ * Which dedicated homepage variant is being shown. The Kaalsarp home lives
+ * at / and the Narayan Nagbali home at /narayan-nagbali-puja. ONLY the hero
+ * headline differs between the two — every other section (CTAs, services,
+ * gallery, FAQ, footer…) is completely identical.
+ */
+export type HomeVariant = 'kaalsarp' | 'nagbali';
+
 export type Language = 'en' | 'hi';
 
 // Bilingual string helper type

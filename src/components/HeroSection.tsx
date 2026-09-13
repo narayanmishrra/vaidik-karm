@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Phone, MapPin, Camera } from 'lucide-react';
-import { Language } from '../types';
+import { Language, HomeVariant } from '../types';
 import {
   trackEvent,
   BUSINESS_PHONE_DISPLAY,
@@ -9,7 +9,28 @@ import {
 
 interface HeroSectionProps {
   lang: Language;
+  /**
+   * Which puja the hero headline is dedicated to. This is the ONLY content
+   * that differs between the two homepages (Kaalsarp home at / and Narayan
+   * Nagbali home at /narayan-nagbali-puja) — eyebrow, description, CTA and
+   * slideshow stay identical.
+   */
+  heroVariant?: HomeVariant;
 }
+
+/* ------------------------------------------------------------------ */
+/* Hero headline copy per dedicated homepage.                          */
+/* ------------------------------------------------------------------ */
+const HERO_TITLES: Record<HomeVariant, { hi: string; en: string }> = {
+  kaalsarp: {
+    hi: 'त्र्यंबकेश्वर में कालसर्प पूजा',
+    en: 'Kaalsarp Puja at Trimbakeshwar',
+  },
+  nagbali: {
+    hi: 'त्र्यंबकेश्वर में नारायण नागबली पूजा',
+    en: 'Narayan Nagbali Puja at Trimbakeshwar',
+  },
+};
 
 /* ------------------------------------------------------------------ */
 /* REAL photographs only — taken from the website's existing gallery.  */
@@ -97,7 +118,8 @@ const HeroSlideshow: React.FC<{ className?: string }> = ({ className = '' }) => 
   );
 };
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ lang }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ lang, heroVariant = 'kaalsarp' }) => {
+  const heroTitle = HERO_TITLES[heroVariant];
   return (
     <section className="relative border-b border-[#D98E2B]/40 bg-[#FBF3E7] text-[#241A16]">
       {/* Desktop: full-bleed slideshow behind the content. */}
@@ -126,11 +148,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ lang }) => {
           </p>
 
           <h1 className="font-hindi text-[clamp(1.45rem,6.4vw,2rem)] font-bold leading-snug text-[#6B0F1A] lg:text-5xl lg:leading-[1.25] lg:text-white lg:drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)] xl:text-[3.4rem]">
-            त्र्यंबकेश्वर में कालसर्प पूजा एवं नारायण नागबली पूजा
+            {heroTitle.hi}
           </h1>
 
           <h2 className="font-serif text-base font-semibold leading-snug text-[#241A16] sm:text-lg lg:text-2xl lg:text-[#F5E9D8] lg:drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
-            Kaalsarp Puja &amp; Narayan Nagbali Puja at Trimbakeshwar
+            {heroTitle.en}
           </h2>
 
           <p className="font-hindi-body text-sm leading-relaxed text-gray-700 lg:text-white/90 sm:text-base">
