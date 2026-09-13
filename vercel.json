@@ -73,6 +73,14 @@
       "destination": "/index.html"
     },
     {
+      "source": "/narayan-nagbali-puja",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/narayan-nagbali-puja/",
+      "destination": "/index.html"
+    },
+    {
       "source": "/blog/:slug",
       "destination": "/index.html"
     },

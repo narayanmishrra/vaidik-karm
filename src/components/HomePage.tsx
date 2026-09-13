@@ -10,7 +10,9 @@ import {
   Droplets,
 } from 'lucide-react';
 import { HeroSection } from './HeroSection';
-import { SectionId, Language } from '../types';
+import { PujaInfoSection } from './PujaInfoSection';
+import { SectionId, Language, HomeVariant } from '../types';
+import { usePageMeta } from '../hooks/usePageMeta';
 import {
   trackEvent,
   whatsappUrl,
@@ -23,8 +25,28 @@ interface HomePageProps {
   onOpenWhatsAppForPuja: (pujaName: string) => void;
   onOpenWhatsAppWithCustomText: (text: string) => void;
   onSelectPuja: (pujaId: string) => void;
+  /** Dedicated homepage variant — changes only the hero headline. */
+  heroVariant?: HomeVariant;
   lang: Language;
 }
+
+/* ------------------------------------------------------------------ */
+/* Route metadata for the dedicated Narayan Nagbali home               */
+/* (/narayan-nagbali-puja). Invisible head tags only — no visible      */
+/* page content is changed. The Kaalsarp home at / keeps the           */
+/* index.html defaults.                                                */
+/* ------------------------------------------------------------------ */
+const SITE_ORIGIN = 'https://www.kaalsarpintrimbakeshwar.com';
+
+const NAGBALI_HOME_META = {
+  title: 'Narayan Nagbali Puja at Trimbakeshwar | नारायण नागबली पूजा त्र्यंबकेश्वर',
+  description:
+    'Narayan Nagbali Puja performed at Trimbakeshwar Jyotirlinga, Nashik by an experienced Vedic pandit. Real puja photos, clear guidance on dates & vidhi. Call +91 91096 95176 for booking.',
+  canonical: `${SITE_ORIGIN}/narayan-nagbali-puja`,
+  ogTitle: 'Narayan Nagbali Puja at Trimbakeshwar | नारायण नागबली पूजा त्र्यंबकेश्वर',
+  ogDescription:
+    'Authentic Narayan Nagbali puja at Trimbakeshwar Jyotirlinga by an experienced Vedic pandit. Call +91 91096 95176.',
+};
 
 /* ------------------------------------------------------------------ */
 /* Compact trust points — concise, no unverifiable claims.             */
@@ -118,13 +140,28 @@ const CallCta: React.FC<{
   </a>
 );
 
-export const HomePage: React.FC<HomePageProps> = ({ lang }) => {
+export const HomePage: React.FC<HomePageProps> = ({
+  lang,
+  heroVariant = 'kaalsarp',
+  onSelectSection,
+}) => {
   const hi = lang === 'hi';
+
+  // Head tags only for the dedicated Nagbali home URL; the Kaalsarp home at
+  // / keeps the index.html defaults. No visible content is affected.
+  usePageMeta(heroVariant === 'nagbali' ? NAGBALI_HOME_META : null);
 
   return (
     <div>
       {/* ============ HERO: real gallery + bilingual headline + call ============ */}
-      <HeroSection lang={lang} />
+      <HeroSection lang={lang} heroVariant={heroVariant} />
+
+      {/* ============ PUJA-SPECIFIC INFO (unique per homepage for SEO) ============ */}
+      <PujaInfoSection
+        heroVariant={heroVariant}
+        lang={lang}
+        onViewPujaDetails={() => onSelectSection('services')}
+      />
 
       {/* ===================== TRUST / QUICK BENEFITS ===================== */}
       <section className="border-b border-[#D98E2B]/30 bg-white py-6 sm:py-8">
