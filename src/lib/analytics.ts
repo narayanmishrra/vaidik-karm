@@ -1,7 +1,7 @@
 /**
  * Lightweight Google Tag Manager / Google Ads event layer helper.
  *
- * The site loads the Google Tag Manager container (GTM-N99NDZMP) in index.html.
+ * The site loads the Google Tag Manager container (GTM-KR28C4JV) in index.html.
  * GTM reads `window.dataLayer`; custom events pushed here can be mapped to
  * Google Ads conversion tags inside GTM without touching this code:
  *
